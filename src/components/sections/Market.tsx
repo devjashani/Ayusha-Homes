@@ -1,0 +1,164 @@
+import React from 'react';
+import { motion } from 'motion/react';
+import { GlassPanel } from '@/components/glass/GlassPanel';
+import { CONTENT } from '@/data/content';
+import { NumberCounter } from '@/components/ui/NumberCounter';
+import { Target, Users, Compass } from 'lucide-react';
+
+export const Market: React.FC = () => {
+  return (
+    <section id="market" className="py-24 md:py-32 px-4 md:px-8 relative">
+      <div className="w-full max-w-6xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-block mb-3"
+          >
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+              {CONTENT.market.tag}
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="section-headline mb-4"
+          >
+            {CONTENT.market.headline}
+          </motion.h2>
+        </div>
+
+        {/* 3 Sourced Stats Counters */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {CONTENT.stats.map((stat, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: idx * 0.15 }}
+            >
+              <GlassPanel
+                variant="card"
+                className="h-full p-6 md:p-8 flex flex-col justify-between border-white/75 bg-white/45"
+              >
+                <div>
+                  <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E6FA8] tracking-tight mb-2">
+                    <NumberCounter
+                      target={stat.numericValue}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      decimals={stat.numericValue % 1 !== 0 ? 1 : 0}
+                    />
+                  </div>
+                  <p className="text-sm md:text-base font-medium text-[#15202B] mb-4">
+                    {stat.label}
+                  </p>
+                </div>
+                <div className="text-xs text-[#5B6B76] border-t border-black/5 pt-3">
+                  Source: <span className="font-medium text-[#15202B]/80">{stat.source}</span>
+                </div>
+              </GlassPanel>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Nested Funnel: From Mobile Population to AYUSHA's Wedge */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <GlassPanel
+            variant="card"
+            className="p-6 md:p-10 bg-white/60 border-white/80 shadow-[0_20px_50px_rgba(21,32,43,0.06)]"
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-xl md:text-2xl font-bold text-[#15202B]">
+                From a Large Mobile Population to AYUSHA's Focused Entry Point
+              </h3>
+              <p className="text-xs md:text-sm text-[#5B6B76] mt-1">
+                Precision go-to-market funnel prioritizing high-urgency willingness to pay
+              </p>
+            </div>
+
+            {/* Nested Visual Cards */}
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {/* Outer Layer 1 */}
+              <div className="p-5 md:p-6 rounded-2xl bg-white/70 border border-[#D8E2E7] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-xs shrink-0">
+                    <Compass className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm md:text-base text-[#15202B]">
+                      {CONTENT.market.funnel[0].layer}
+                    </h4>
+                    <p className="text-xs md:text-sm text-[#5B6B76]">
+                      {CONTENT.market.funnel[0].description}
+                    </p>
+                  </div>
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800 shrink-0">
+                  {CONTENT.market.funnel[0].metric}
+                </span>
+              </div>
+
+              {/* Middle Layer 2 */}
+              <div className="p-5 md:p-6 rounded-2xl bg-[#E7F3FB]/70 border border-[#4FA8E0]/40 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ml-0 sm:ml-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#4FA8E0]/20 text-[#1E6FA8] flex items-center justify-center font-bold text-xs shrink-0">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm md:text-base text-[#1E6FA8]">
+                      {CONTENT.market.funnel[1].layer}
+                    </h4>
+                    <p className="text-xs md:text-sm text-[#5B6B76]">
+                      {CONTENT.market.funnel[1].description}
+                    </p>
+                  </div>
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#1E6FA8]/15 text-[#1E6FA8] shrink-0">
+                  {CONTENT.market.funnel[1].metric}
+                </span>
+              </div>
+
+              {/* Core Wedge Layer 3 */}
+              <div className="p-6 md:p-7 rounded-2xl bg-gradient-to-r from-[#1E6FA8] to-[#15202B] text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ml-0 sm:ml-8 border border-white/20">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h4 className="font-bold text-base md:text-lg text-white">
+                        {CONTENT.market.funnel[2].layer}
+                      </h4>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-400 text-emerald-950">
+                        Inaugural Pilot Wedge
+                      </span>
+                    </div>
+                    <p className="text-xs md:text-sm text-gray-200 max-w-xl leading-relaxed">
+                      {CONTENT.market.funnel[2].description}
+                    </p>
+                  </div>
+                </div>
+                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-[#1E6FA8] shadow-md shrink-0">
+                  {CONTENT.market.funnel[2].metric}
+                </span>
+              </div>
+            </div>
+          </GlassPanel>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
