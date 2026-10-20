@@ -36,7 +36,7 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#15202B]/50 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--ink)]/50 backdrop-blur-md"
           onClick={onClose}
         >
           <motion.div
@@ -55,22 +55,22 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
               variant="modal"
               className="p-6 md:p-8 border-white/90 bg-white/95 shadow-2xl relative"
             >
-              <div className="flex items-center justify-between pb-4 border-b border-[#D8E2E7]">
+              <div className="flex items-center justify-between pb-4 border-b border-[var(--line)]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-[#1E6FA8]/10 text-[#1E6FA8] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-xl bg-[var(--accent)]/10 text-[var(--accent-text)] flex items-center justify-center">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 id="talk-modal-title" className="font-bold text-lg text-[#15202B]">
+                    <h3 id="talk-modal-title" className="font-bold text-lg text-[var(--ink)]">
                       {CONTENT.waitlist.modalContactTitle}
                     </h3>
-                    <span className="text-xs text-[#5B6B76]">Confidential Corridor Discussion</span>
+                    <span className="text-xs text-[var(--muted)]">Confidential Corridor Discussion</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="p-1.5 rounded-full text-[#5B6B76] hover:bg-black/5 hover:text-[#15202B] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-full text-[var(--muted)] hover:bg-black/5 hover:text-[var(--ink)] transition-colors cursor-pointer"
                   aria-label="Close Dialog"
                 >
                   <X className="w-5 h-5" />
@@ -78,39 +78,39 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="py-6 space-y-4">
-                <p className="text-sm text-[#5B6B76] leading-relaxed">
+                <p className="text-sm text-[var(--muted)] leading-relaxed">
                   {CONTENT.waitlist.modalContactDescription}
                 </p>
 
-                <div className="p-4 rounded-2xl bg-[#E7F3FB]/60 border border-[#1E6FA8]/20 flex items-center justify-between">
+                <div className="p-4 rounded-2xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-between">
                   <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#1E6FA8] block">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--accent-text)] block">
                       Direct Founder Contact
                     </span>
-                    <span className="text-sm font-semibold text-[#15202B]">
+                    <span className="text-sm font-semibold text-[var(--ink)]">
                       {CONTENT.waitlist.modalContactEmail}
                     </span>
                   </div>
                   <a
                     href={`mailto:${CONTENT.waitlist.modalContactEmail}?subject=AYUSHA%20Investor%20%2F%20Partner%20Inquiry`}
-                    className="px-4 py-2 rounded-full font-semibold text-xs bg-[#1E6FA8] text-white hover:bg-[#185986] shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 rounded-full font-semibold text-xs bg-[var(--brand)] text-white hover:bg-[var(--brand-hover)] shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Launch Mail</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
 
-                <div className="text-xs text-[#5B6B76] flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="text-xs text-[var(--muted)] flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[var(--status-success)] shrink-0" />
                   <span>NDAs and institutional deployment whitepapers available upon accredited request.</span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#D8E2E7] flex justify-end">
+              <div className="pt-4 border-t border-[var(--line)] flex justify-end">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-5 py-2 rounded-full text-xs font-semibold text-[#5B6B76] hover:bg-black/5 transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-full text-xs font-semibold text-[var(--muted)] hover:bg-black/5 transition-colors cursor-pointer"
                 >
                   Close
                 </button>

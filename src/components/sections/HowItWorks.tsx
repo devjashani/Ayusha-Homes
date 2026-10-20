@@ -34,10 +34,10 @@ export const HowItWorks: React.FC = () => {
   }, [isInView, isPlaying]);
 
   return (
-    <section id="how-it-works" ref={sectionRef} className="py-24 md:py-32 px-4 md:px-8 relative">
-      <div className="w-full max-w-6xl mx-auto">
+    <div ref={sectionRef} className="relative">
+      <div className="w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ export const HowItWorks: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="inline-block mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
               {CONTENT.howItWorks.tag}
             </span>
           </motion.div>
@@ -65,7 +65,7 @@ export const HowItWorks: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[#5B6B76] font-normal"
+            className="text-base md:text-lg text-[var(--muted)] font-normal"
           >
             {CONTENT.howItWorks.subhead}
           </motion.p>
@@ -75,21 +75,21 @@ export const HowItWorks: React.FC = () => {
         <div className="mb-12">
           {/* Controls toggle */}
           <div className="flex justify-between items-center mb-6">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#5B6B76]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">
               6-Step Emergency Response Lifecycle
             </span>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-white/60 border border-white/80 hover:bg-white text-[#15202B] shadow-xs cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-white/60 border border-white/80 hover:bg-white text-[var(--ink)] shadow-xs cursor-pointer"
             >
               {isPlaying ? (
                 <>
-                  <Pause className="w-3.5 h-3.5 text-[#1E6FA8]" />
+                  <Pause className="w-3.5 h-3.5 text-[var(--accent)]" />
                   <span>Pause Walkthrough</span>
                 </>
               ) : (
                 <>
-                  <Play className="w-3.5 h-3.5 text-[#1E6FA8]" />
+                  <Play className="w-3.5 h-3.5 text-[var(--accent)]" />
                   <span>Auto-Play Sequence</span>
                 </>
               )}
@@ -99,11 +99,11 @@ export const HowItWorks: React.FC = () => {
           {/* Stepper nodes and connecting glowing line */}
           <div className="relative">
             {/* Background connecting track */}
-            <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 h-1 bg-[#D8E2E7] rounded-full z-0 hidden md:block" />
+            <div className="absolute top-1/2 left-4 right-4 -translate-y-1/2 h-1 bg-[var(--line)] rounded-full z-0 hidden md:block" />
 
             {/* Glowing progress line */}
             <motion.div
-              className="absolute top-1/2 left-4 -translate-y-1/2 h-1 bg-gradient-to-r from-[#1E6FA8] to-[#4FA8E0] rounded-full z-0 hidden md:block shadow-[0_0_12px_rgba(79,168,224,0.8)]"
+              className="absolute top-1/2 left-4 -translate-y-1/2 h-1 bg-gradient-to-r from-[var(--brand)] to-[var(--accent)] rounded-full z-0 hidden md:block shadow-sm"
               animate={{
                 width: `${((activeStep - 1) / 5) * 96}%`,
               }}
@@ -128,8 +128,8 @@ export const HowItWorks: React.FC = () => {
                     className={`flex flex-col items-center p-3.5 rounded-2xl transition-all duration-300 text-center cursor-pointer border ${
                       isActive
                         ? isAyusha
-                          ? 'bg-white border-[#1E6FA8] shadow-[0_8px_24px_rgba(30,111,168,0.22)] scale-105'
-                          : 'bg-white border-rose-500 shadow-[0_8px_24px_rgba(244,63,94,0.2)] scale-105'
+                          ? 'bg-white border-[var(--accent)] shadow-md scale-105'
+                          : 'bg-white border-[var(--status-warning)] shadow-md scale-105'
                         : 'bg-white/50 border-white/70 hover:bg-white/80'
                     }`}
                   >
@@ -137,25 +137,25 @@ export const HowItWorks: React.FC = () => {
                       className={`w-11 h-11 rounded-full flex items-center justify-center font-bold text-sm mb-2 transition-all ${
                         isActive
                           ? isAyusha
-                            ? 'bg-[#1E6FA8] text-white shadow-md'
-                            : 'bg-rose-500 text-white shadow-md'
+                            ? 'bg-[var(--accent)] text-white shadow-md'
+                            : 'bg-[var(--status-warning)] text-white shadow-md'
                           : isAyusha
-                          ? 'bg-[#1E6FA8]/10 text-[#1E6FA8]'
-                          : 'bg-rose-100 text-rose-700'
+                          ? 'bg-[var(--accent)]/12 text-[var(--accent-text)]'
+                          : 'bg-[var(--status-warning)]/15 text-[var(--status-warning)]'
                       }`}
                     >
                       <Icon className="w-5 h-5" />
                     </div>
 
-                    <span className="font-semibold text-xs text-[#15202B]">
+                    <span className="font-semibold text-xs text-[var(--ink)]">
                       {stepItem.title}
                     </span>
 
                     <span
                       className={`text-[9px] font-bold mt-1 px-1.5 py-0.5 rounded ${
                         isAyusha
-                          ? 'bg-[#1E6FA8]/10 text-[#1E6FA8]'
-                          : 'bg-rose-100 text-rose-700'
+                          ? 'bg-[var(--accent)]/12 text-[var(--accent-text)]'
+                          : 'bg-[var(--status-warning)]/15 text-[var(--status-warning)]'
                       }`}
                     >
                       {isAyusha ? 'AYUSHA' : 'CLINICAL'}
@@ -179,8 +179,8 @@ export const HowItWorks: React.FC = () => {
                 variant="card"
                 className={`p-6 md:p-10 transition-colors duration-300 ${
                   isAyusha
-                    ? 'border-[#1E6FA8]/30 bg-white/70 shadow-[0_16px_40px_rgba(30,111,168,0.1)]'
-                    : 'border-rose-400/40 bg-white/80 shadow-[0_16px_40px_rgba(244,63,94,0.12)]'
+                    ? 'border-[var(--accent)]/35 bg-white/70 shadow-lg'
+                    : 'border-[var(--status-warning)]/35 bg-white/80 shadow-lg'
                 }`}
               >
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -188,8 +188,8 @@ export const HowItWorks: React.FC = () => {
                     <div
                       className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
                         isAyusha
-                          ? 'bg-[#1E6FA8] text-white shadow-lg'
-                          : 'bg-rose-500 text-white shadow-lg'
+                          ? 'bg-[var(--accent)] text-white shadow-lg'
+                          : 'bg-[var(--status-warning)] text-white shadow-lg'
                       }`}
                     >
                       <Icon className="w-7 h-7" />
@@ -199,18 +199,18 @@ export const HowItWorks: React.FC = () => {
                         <span
                           className={`text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
                             isAyusha
-                              ? 'bg-[#1E6FA8]/15 text-[#1E6FA8]'
-                              : 'bg-rose-100 text-rose-700'
+                              ? 'bg-[var(--accent)]/15 text-[var(--accent-text)]'
+                              : 'bg-[var(--status-warning)]/15 text-[var(--status-warning)]'
                           }`}
                         >
                           {current.badge}
                         </span>
-                        <span className="text-xs text-[#5B6B76]">Phase {current.step} of 6</span>
+                        <span className="text-xs text-[var(--muted)]">Phase {current.step} of 6</span>
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-[#15202B]">
+                      <h3 className="text-xl md:text-2xl font-bold text-[var(--ink)]">
                         {current.title}
                       </h3>
-                      <p className="text-sm md:text-base text-[#5B6B76] mt-2 max-w-2xl leading-relaxed">
+                      <p className="text-sm md:text-base text-[var(--muted)] mt-2 max-w-2xl leading-relaxed">
                         {current.description}
                       </p>
                     </div>
@@ -218,12 +218,12 @@ export const HowItWorks: React.FC = () => {
 
                   <div className="shrink-0 p-4 rounded-xl bg-black/5 text-xs max-w-xs">
                     {isAyusha ? (
-                      <div className="flex items-start gap-2 text-[#1E6FA8]">
-                        <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5" />
+                      <div className="flex items-start gap-2 text-[var(--accent-text)]">
+                        <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5 text-[var(--accent)]" />
                         <span>Automated digital continuity protocol under patient & institutional consent.</span>
                       </div>
                     ) : (
-                      <div className="flex items-start gap-2 text-rose-700">
+                      <div className="flex items-start gap-2 text-[var(--status-warning)]">
                         <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                         <span>Physicians and triage officers maintain 100% diagnostic autonomy.</span>
                       </div>
@@ -238,23 +238,23 @@ export const HowItWorks: React.FC = () => {
         {/* Visibly prominent Liability Boundary Box */}
         <GlassPanel
           variant="card"
-          className="p-5 md:p-6 bg-gradient-to-r from-[#15202B] to-[#1E2E3D] text-white border-white/10 shadow-xl"
+          className="p-5 md:p-6 bg-[var(--ink)] text-[var(--on-dark)] border-white/10 shadow-xl"
         >
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3.5">
-            <div className="p-2 rounded-lg bg-rose-500/20 text-rose-300 shrink-0">
+            <div className="p-2 rounded-lg bg-[var(--status-warning)]/20 text-[var(--on-dark-muted)] shrink-0">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-rose-300 block mb-0.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-[var(--on-dark-muted)] block mb-0.5">
                 Clinical Safety Boundary
               </span>
-              <p className="text-xs md:text-sm text-gray-200 leading-relaxed font-normal">
+              <p className="text-xs md:text-sm text-[var(--on-dark-muted)] leading-relaxed font-normal">
                 {CONTENT.brand.legalBoundary}
               </p>
             </div>
           </div>
         </GlassPanel>
       </div>
-    </section>
+    </div>
   );
 };

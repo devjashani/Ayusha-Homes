@@ -9,10 +9,10 @@ export const Problem: React.FC = () => {
   const icons = [Globe2, FileSpreadsheet, AlertCircle];
 
   return (
-    <section id="problem" className="py-24 md:py-32 px-4 md:px-8 relative">
-      <div className="w-full max-w-6xl mx-auto">
+    <div className="relative pb-10 md:pb-16">
+      <div className="w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -20,7 +20,7 @@ export const Problem: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="inline-block mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
               {CONTENT.problem.tag}
             </span>
           </motion.div>
@@ -40,7 +40,7 @@ export const Problem: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[#5B6B76] font-normal"
+            className="text-base md:text-lg text-[var(--muted)] font-normal"
           >
             {CONTENT.problem.subhead}
           </motion.p>
@@ -61,29 +61,29 @@ export const Problem: React.FC = () => {
                 <GlassPanel
                   variant="card"
                   tiltOnHover={true}
-                  className="h-full flex flex-col justify-between hover:border-[#1E6FA8]/40 transition-all duration-300 group"
+                  className="h-full flex flex-col justify-between hover:border-[var(--accent)]/40 transition-all duration-300 group"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1E6FA8]/15 to-[#4FA8E0]/15 text-[#1E6FA8] flex items-center justify-center border border-[#1E6FA8]/20 group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--accent)]/15 to-[var(--accent)]/5 text-[var(--accent)] flex items-center justify-center border border-[var(--accent)]/35 group-hover:scale-110 transition-transform duration-300">
                         <Icon className="w-6 h-6" />
                       </div>
-                      <span className="font-mono text-2xl font-bold text-[#5B6B76]/40 group-hover:text-[#1E6FA8]/50 transition-colors">
+                      <span className="font-mono text-2xl font-bold text-[var(--muted)]/40 group-hover:text-[var(--accent)]/50 transition-colors">
                         {card.stepNumber}
                       </span>
                     </div>
 
-                    <h3 className="font-semibold text-lg md:text-xl text-[#15202B] mb-3">
+                    <h3 className="font-semibold text-lg md:text-xl text-[var(--ink)] mb-3">
                       {card.title}
                     </h3>
 
-                    <p className="text-sm md:text-base text-[#5B6B76] leading-relaxed">
+                    <p className="text-sm md:text-base text-[var(--muted)] leading-relaxed">
                       {card.description}
                     </p>
                   </div>
 
-                  <div className="mt-8 pt-4 border-t border-black/5 flex items-center gap-2 text-xs font-medium text-[#1E6FA8]/80">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#1E6FA8]" />
+                  <div className="mt-8 pt-4 border-t border-black/5 flex items-center gap-2 text-xs font-medium text-[var(--accent-text)]/80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
                     <span>Siloed border vulnerability</span>
                   </div>
                 </GlassPanel>
@@ -102,13 +102,13 @@ export const Problem: React.FC = () => {
         >
           <GlassPanel
             variant="card"
-            className="p-6 md:p-8 bg-[#15202B] text-white border-white/10 shadow-[0_16px_40px_rgba(21,32,43,0.18)]"
+            className="p-6 md:p-8 bg-[var(--ink)] text-[var(--on-dark)] border-white/10 shadow-xl"
           >
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-              <div className="px-3 py-1 rounded-md bg-[#4FA8E0]/20 text-[#4FA8E0] text-xs font-bold uppercase tracking-wider shrink-0">
+              <div className="px-3 py-1 rounded-md bg-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold uppercase tracking-wider shrink-0">
                 Core Bottleneck
               </div>
-              <p className="text-sm md:text-base text-gray-200 leading-relaxed font-normal">
+              <p className="text-sm md:text-base text-[var(--on-dark-muted)] leading-relaxed font-normal">
                 {CONTENT.problem.callout}
               </p>
             </div>
@@ -130,25 +130,25 @@ export const Problem: React.FC = () => {
                 className="p-6 md:p-8 flex flex-col justify-between border-white/70 bg-white/40"
               >
                 <div>
-                  <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E6FA8] tracking-tight mb-2">
+                  <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--accent)] tracking-tight mb-2">
                     <NumberCounter
                       target={stat.numericValue}
                       suffix={stat.suffix}
                       decimals={stat.numericValue % 1 !== 0 ? 1 : 0}
                     />
                   </div>
-                  <p className="text-sm md:text-base font-medium text-[#15202B] mb-4">
+                  <p className="text-sm md:text-base font-medium text-[var(--ink)] mb-4">
                     {stat.label}
                   </p>
                 </div>
-                <p className="text-xs text-[#5B6B76] border-t border-black/5 pt-3">
-                  Source: <span className="font-medium text-[#15202B]/80">{stat.source}</span>
+                <p className="text-xs text-[var(--muted)] border-t border-black/5 pt-3">
+                  Source: <span className="font-medium text-[var(--ink)]/80">{stat.source}</span>
                 </p>
               </GlassPanel>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };

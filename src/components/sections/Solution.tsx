@@ -13,10 +13,10 @@ export const Solution: React.FC = () => {
   };
 
   return (
-    <section id="solution" className="py-24 md:py-32 px-4 md:px-8 relative">
-      <div className="w-full max-w-6xl mx-auto">
+    <div className="relative pb-10 md:pb-16">
+      <div className="w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export const Solution: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="inline-block mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
               {CONTENT.solution.tag}
             </span>
           </motion.div>
@@ -44,7 +44,7 @@ export const Solution: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[#5B6B76] font-normal"
+            className="text-base md:text-lg text-[var(--muted)] font-normal"
           >
             {CONTENT.solution.subhead}
           </motion.p>
@@ -62,23 +62,23 @@ export const Solution: React.FC = () => {
           <GlassPanel
             variant="card"
             liquidRefraction={true}
-            className="p-8 md:p-10 mb-6 bg-white/70 border-white/90 shadow-[0_20px_50px_rgba(30,111,168,0.12)] relative z-20"
+            className="p-8 md:p-10 mb-6 bg-white/70 border-white/90 shadow-xl relative z-20"
           >
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[#D8E2E7]">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[var(--line)]">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1E6FA8] to-[#4FA8E0] text-white flex items-center justify-center shadow-md">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[var(--brand)] to-[var(--brand-soft)] text-white flex items-center justify-center shadow-md">
                   <Layers className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg md:text-xl text-[#15202B]">
+                  <h3 className="font-semibold text-lg md:text-xl text-[var(--ink)]">
                     AYUSHA — The Continuity Layer
                   </h3>
-                  <p className="text-xs md:text-sm text-[#5B6B76]">
+                  <p className="text-xs md:text-sm text-[var(--muted)]">
                     A unified patient experience built on top of the systems that already exist, not a replacement.
                   </p>
                 </div>
               </div>
-              <span className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#1E6FA8]/10 text-[#1E6FA8] border border-[#1E6FA8]/20">
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[var(--accent)]/12 text-[var(--accent-text)] border border-[var(--accent)]/35">
                 Active Orchestration
               </span>
             </div>
@@ -95,39 +95,39 @@ export const Solution: React.FC = () => {
                     onClick={() => setSelectedPillar(pillar.id)}
                     className={`cursor-pointer p-5 md:p-6 rounded-2xl transition-all duration-300 border ${
                       isSelected
-                        ? 'bg-white/90 border-[#1E6FA8] shadow-[0_10px_30px_rgba(30,111,168,0.15)] ring-2 ring-[#1E6FA8]/20'
-                        : 'bg-white/40 border-white/60 hover:bg-white/60 hover:border-[#1E6FA8]/30 shadow-xs'
+                        ? 'bg-white/90 border-[var(--accent)] shadow-md ring-2 ring-[var(--accent)]/20'
+                        : 'bg-white/40 border-white/60 hover:bg-white/60 hover:border-[var(--accent)]/30 shadow-xs'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
                           isSelected
-                            ? 'bg-[#1E6FA8] text-white'
-                            : 'bg-[#1E6FA8]/10 text-[#1E6FA8]'
+                            ? 'bg-[var(--accent)] text-white'
+                            : 'bg-[var(--accent)]/12 text-[var(--accent-text)]'
                         }`}
                       >
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-mono text-xs font-bold text-[#5B6B76]/60">
+                      <span className="font-mono text-xs font-bold text-[var(--muted)]/60">
                         Pillar {pillar.number}
                       </span>
                     </div>
 
-                    <h4 className="font-semibold text-lg text-[#15202B] mb-1">
+                    <h4 className="font-semibold text-lg text-[var(--ink)] mb-1">
                       {pillar.title}
                     </h4>
-                    <p className="text-xs font-medium text-[#1E6FA8] mb-3">
+                    <p className="text-xs font-medium text-[var(--accent-text)] mb-3">
                       {pillar.subtitle}
                     </p>
-                    <p className="text-xs md:text-sm text-[#5B6B76] leading-relaxed mb-4">
+                    <p className="text-xs md:text-sm text-[var(--muted)] leading-relaxed mb-4">
                       {pillar.description}
                     </p>
 
                     <div className="space-y-1.5 pt-3 border-t border-black/5">
                       {pillar.details.map((detail, dIdx) => (
-                        <div key={dIdx} className="flex items-start gap-1.5 text-xs text-[#15202B]/85">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#1E6FA8] shrink-0 mt-0.5" />
+                        <div key={dIdx} className="flex items-start gap-1.5 text-xs text-[var(--ink)]/85">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent)] shrink-0 mt-0.5" />
                           <span>{detail}</span>
                         </div>
                       ))}
@@ -140,22 +140,22 @@ export const Solution: React.FC = () => {
 
           {/* Connector pulses */}
           <div className="flex justify-center my-1">
-            <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/70 border border-white/80 text-[11px] font-medium text-[#5B6B76] shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-[#4FA8E0] animate-ping" />
+            <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/70 border border-white/80 text-[11px] font-medium text-[var(--muted)] shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
               <span>Bi-directional interoperability bridges</span>
             </div>
           </div>
 
           {/* Base Layer: Disparate Global Health Systems & Hospitals */}
-          <div className="p-6 md:p-7 rounded-[24px] bg-[#15202B]/90 text-white shadow-xl relative z-10 border border-white/10">
+          <div className="p-6 md:p-7 rounded-[24px] bg-[var(--ink)]/90 text-[var(--on-dark)] shadow-xl relative z-10 border border-white/10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full bg-rose-400" />
-                <span className="text-xs md:text-sm font-semibold tracking-wide text-gray-200">
+                <div className="w-3 h-3 rounded-full bg-[var(--status-risk)]" />
+                <span className="text-xs md:text-sm font-semibold tracking-wide text-[var(--on-dark)]">
                   {CONTENT.solution.baseLayerText}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-2 text-[11px] text-gray-300">
+              <div className="flex flex-wrap gap-2 text-[11px] text-[var(--on-dark-muted)]">
                 <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">Epic / Cerner EHR</span>
                 <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">India ABDM (ABHA)</span>
                 <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">NHS Spine / EU HIE</span>
@@ -165,6 +165,6 @@ export const Solution: React.FC = () => {
           </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 };

@@ -8,10 +8,10 @@ export const Moat: React.FC = () => {
   const icons = [ShieldCheck, Users, Globe, Layers, Database, Cpu];
 
   return (
-    <section className="py-24 md:py-32 px-4 md:px-8 relative">
-      <div className="w-full max-w-6xl mx-auto">
+    <div className="relative py-8 md:py-12">
+      <div className="w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -19,7 +19,7 @@ export const Moat: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="inline-block mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
               {CONTENT.moat.tag}
             </span>
           </motion.div>
@@ -39,7 +39,7 @@ export const Moat: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[#5B6B76] font-normal"
+            className="text-base md:text-lg text-[var(--muted)] font-normal"
           >
             {CONTENT.moat.subhead}
           </motion.p>
@@ -64,23 +64,23 @@ export const Moat: React.FC = () => {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-[#1E6FA8]/10 text-[#1E6FA8] flex items-center justify-center font-bold text-xs">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--accent)]/12 text-[var(--accent-text)] flex items-center justify-center font-bold text-xs">
                         {stage.step}
                       </div>
-                      <Icon className="w-4 h-4 text-[#5B6B76]" />
+                      <Icon className="w-4 h-4 text-[var(--muted)]" />
                     </div>
 
-                    <h3 className="font-semibold text-sm text-[#15202B] mb-2 leading-snug">
+                    <h3 className="font-semibold text-sm text-[var(--ink)] mb-2 leading-snug">
                       {stage.title}
                     </h3>
 
-                    <p className="text-xs text-[#5B6B76] leading-relaxed">
+                    <p className="text-xs text-[var(--muted)] leading-relaxed">
                       {stage.description}
                     </p>
                   </div>
 
                   {idx < 5 && (
-                    <div className="mt-4 pt-2 border-t border-black/5 flex justify-end text-[#1E6FA8]">
+                    <div className="mt-4 pt-2 border-t border-black/5 flex justify-end text-[var(--accent)]">
                       <ArrowRight className="w-3.5 h-3.5 hidden lg:block opacity-60" />
                     </div>
                   )}
@@ -98,11 +98,11 @@ export const Moat: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center"
         >
-          <p className="text-xs md:text-sm font-semibold tracking-wide text-[#1E6FA8] uppercase bg-white/60 inline-block px-6 py-2.5 rounded-full border border-white/80 shadow-xs">
+          <p className="text-xs md:text-sm font-semibold tracking-wide text-[var(--accent-text)] uppercase bg-white/60 inline-block px-6 py-2.5 rounded-full border border-white/80 shadow-xs">
             {CONTENT.moat.summary}
           </p>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 };

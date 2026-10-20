@@ -88,12 +88,9 @@ Modify headings, card descriptions, milestones, or metrics without touching JSX 
 
 ### 2. Design Tokens & Palette
 Color tokens and typography rules are defined in:
-👉 [`src/styles/index.css`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/styles/index.css)
-- Primary Brand: `--brand: #1E6FA8`
-- Secondary Cyan: `--brand-2: #4FA8E0`
-- Teal Accent: `--teal-accent: #6FC7C9`
-- Deep Ink: `--ink: #15202B`
-- Soft Tint: `--tint: #E7F3FB`
+👉 [`src/styles/index.css`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/styles/index.css) & [`src/styles/themes.ts`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/styles/themes.ts)
+- Source Palette: Sky Blue `#4391C6`, Soft Azure `#63A4CE`, Deep Lake Blue `#336E87`, Turquoise Teal `#549A98`, Sage Green `#7EA294`, Granite Grey `#B5BEBA`, Charcoal Slate `#344546`
+- Global Tokens: `--ink: #1B2829`, `--muted: #4F6264`, `--on-dark: #EEF3F2`, `--on-dark-muted: #B5BEBA`, `--brand: #336E87`, `--brand-hover: #2D6177`, `--brand-soft: #4391C6`
 
 ### 3. Production Waitlist API
 The waitlist submission stub lives in:

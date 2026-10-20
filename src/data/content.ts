@@ -119,9 +119,9 @@ export const CONTENT = {
   },
 
   nav: [
-    { label: "Why it matters", href: "#problem" },
+    { label: "Why it matters", href: "#why" },
     { label: "Solution", href: "#solution" },
-    { label: "How it works", href: "#how-it-works" },
+    { label: "How it works", href: "#how" },
     { label: "Trust & Tech", href: "#trust" },
     { label: "Market", href: "#market" },
     { label: "Roadmap", href: "#roadmap" },

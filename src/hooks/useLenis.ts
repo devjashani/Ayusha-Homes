@@ -18,6 +18,7 @@ export function useLenis() {
       touchMultiplier: 1.2,
     });
     lenisRef.current = lenis;
+    (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
     let animationFrameId: number;
     function raf(time: number) {
@@ -29,6 +30,7 @@ export function useLenis() {
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      delete (window as unknown as { lenis?: Lenis }).lenis;
       lenis.destroy();
     };
   }, []);

@@ -6,10 +6,10 @@ import { Check, Minus, Sparkles } from 'lucide-react';
 
 export const Comparison: React.FC = () => {
   return (
-    <section className="py-24 md:py-32 px-4 md:px-8 relative">
-      <div className="w-full max-w-6xl mx-auto">
+    <div className="relative py-8 md:py-12">
+      <div className="w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -17,7 +17,7 @@ export const Comparison: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="inline-block mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[#1E6FA8] uppercase bg-[#1E6FA8]/10 px-3.5 py-1.5 rounded-full border border-[#1E6FA8]/20">
+            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
               {CONTENT.comparison.tag}
             </span>
           </motion.div>
@@ -43,32 +43,32 @@ export const Comparison: React.FC = () => {
         >
           <GlassPanel
             variant="card"
-            className="p-4 md:p-8 bg-white/60 border-white/80 shadow-[0_20px_50px_rgba(21,32,43,0.06)] overflow-x-auto no-scrollbar"
+            className="p-4 md:p-8 bg-white/60 border-white/80 shadow-xl overflow-x-auto no-scrollbar"
           >
             <table className="w-full min-w-[700px] border-collapse text-left">
               <thead>
-                <tr className="border-b border-[#D8E2E7]">
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76]">
+                <tr className="border-b border-[var(--line)]">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                     Model
                   </th>
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76]">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                     Gap AYUSHA closes
                   </th>
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76] text-center">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)] text-center">
                     Verified Identity
                   </th>
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76] text-center">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)] text-center">
                     Longitudinal Context
                   </th>
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76] text-center">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)] text-center">
                     Emergency Workflow
                   </th>
-                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[#5B6B76] text-center">
+                  <th className="py-4 px-4 text-xs font-bold uppercase tracking-wider text-[var(--muted)] text-center">
                     Cross-Border Routing
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#D8E2E7]/60">
+              <tbody className="divide-y divide-[var(--line)]">
                 {CONTENT.comparison.rows.map((row, index) => {
                   const isAyusha = row.isAyusha;
 
@@ -81,25 +81,25 @@ export const Comparison: React.FC = () => {
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className={`transition-colors ${
                         isAyusha
-                          ? 'bg-gradient-to-r from-[#1E6FA8]/15 via-[#4FA8E0]/15 to-[#6FC7C9]/15 shadow-sm rounded-2xl font-semibold'
+                          ? 'bg-[var(--accent)]/12 shadow-sm rounded-2xl font-semibold border-y border-[var(--accent)]/30'
                           : 'hover:bg-white/40'
                       }`}
                     >
                       {/* Name */}
-                      <td className="py-4 px-4 text-sm text-[#15202B]">
+                      <td className="py-4 px-4 text-sm text-[var(--ink)]">
                         <div className="flex items-center gap-2">
                           {isAyusha && (
-                            <span className="w-2 h-2 rounded-full bg-[#1E6FA8] animate-ping" />
+                            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
                           )}
-                          <span className={isAyusha ? 'font-bold text-[#1E6FA8] text-base' : 'font-medium'}>
+                          <span className={isAyusha ? 'font-bold text-[var(--accent-text)] text-base' : 'font-medium'}>
                             {row.name}
                           </span>
                         </div>
                       </td>
 
                       {/* Gap */}
-                      <td className="py-4 px-4 text-xs md:text-sm text-[#5B6B76]">
-                        <span className={isAyusha ? 'text-[#1E6FA8] font-bold' : ''}>
+                      <td className="py-4 px-4 text-xs md:text-sm text-[var(--muted)]">
+                        <span className={isAyusha ? 'text-[var(--accent-text)] font-bold' : ''}>
                           {row.gap}
                         </span>
                       </td>
@@ -107,11 +107,11 @@ export const Comparison: React.FC = () => {
                       {/* Verified Identity */}
                       <td className="py-4 px-4 text-center">
                         {row.verifiedIdentity ? (
-                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-800">
+                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--status-success)]/15 text-[var(--ink)]">
                             <Check className="w-4 h-4 stroke-[3]" />
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center w-7 h-7 text-gray-400">
+                          <span className="inline-flex items-center justify-center w-7 h-7 text-[var(--muted)]/50">
                             <Minus className="w-4 h-4" />
                           </span>
                         )}
@@ -120,11 +120,11 @@ export const Comparison: React.FC = () => {
                       {/* Longitudinal Context */}
                       <td className="py-4 px-4 text-center">
                         {row.longitudinalContext ? (
-                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-800">
+                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--status-success)]/15 text-[var(--ink)]">
                             <Check className="w-4 h-4 stroke-[3]" />
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center w-7 h-7 text-gray-400">
+                          <span className="inline-flex items-center justify-center w-7 h-7 text-[var(--muted)]/50">
                             <Minus className="w-4 h-4" />
                           </span>
                         )}
@@ -133,11 +133,11 @@ export const Comparison: React.FC = () => {
                       {/* Emergency Workflow */}
                       <td className="py-4 px-4 text-center">
                         {row.emergencyWorkflow ? (
-                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-800">
+                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--status-success)]/15 text-[var(--ink)]">
                             <Check className="w-4 h-4 stroke-[3]" />
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center w-7 h-7 text-gray-400">
+                          <span className="inline-flex items-center justify-center w-7 h-7 text-[var(--muted)]/50">
                             <Minus className="w-4 h-4" />
                           </span>
                         )}
@@ -146,11 +146,11 @@ export const Comparison: React.FC = () => {
                       {/* Cross-Border Routing */}
                       <td className="py-4 px-4 text-center">
                         {row.crossBorderRouting ? (
-                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-800">
+                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--status-success)]/15 text-[var(--ink)]">
                             <Check className="w-4 h-4 stroke-[3]" />
                           </span>
                         ) : (
-                          <span className="inline-flex items-center justify-center w-7 h-7 text-gray-400">
+                          <span className="inline-flex items-center justify-center w-7 h-7 text-[var(--muted)]/50">
                             <Minus className="w-4 h-4" />
                           </span>
                         )}
@@ -173,15 +173,15 @@ export const Comparison: React.FC = () => {
         >
           <GlassPanel
             variant="chip"
-            className="inline-flex items-center gap-2 py-3 px-6 bg-gradient-to-r from-[#1E6FA8] to-[#15202B] text-white shadow-lg"
+            className="inline-flex items-center gap-2 py-3 px-6 bg-gradient-to-r from-[var(--brand)] to-[var(--ink)] text-[var(--on-dark)] shadow-lg"
           >
-            <Sparkles className="w-4 h-4 text-[#6FC7C9]" />
+            <Sparkles className="w-4 h-4 text-[var(--accent)]" />
             <span className="text-xs md:text-sm font-semibold tracking-wide">
               {CONTENT.comparison.closingStatement}
             </span>
           </GlassPanel>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
