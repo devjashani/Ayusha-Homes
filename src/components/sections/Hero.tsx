@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import { CONTENT } from '@/data/content';
 import { LiquidReveal } from '@/components/ui/LiquidReveal';
 import { PillButton } from '@/components/ui/PillButton';
+import { SoftImage } from '@/components/ui/SoftImage';
+import { imageTuning } from '@/data/imageTuning';
 import { scrollToTarget } from '@/hooks/useLenis';
 import {
   ShieldAlert,
@@ -145,12 +147,26 @@ export const Hero: React.FC<HeroProps> = ({ introReady = true, onCheckReadiness 
           </div>
 
           {/* Right Column (Span 5, aligned end on lg) */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <div className="lg:col-span-5 flex justify-center lg:justify-end relative">
+            {/* Subtle decorative glow image behind passport card */}
+            <SoftImage
+              src="/images/hero-passport.webp"
+              width={1400}
+              height={933}
+              opacity={imageTuning.heroPassport.opacity}
+              blend={imageTuning.heroPassport.blend}
+              mask={imageTuning.heroPassport.mask}
+              parallax={imageTuning.heroPassport.parallax}
+              float={imageTuning.heroPassport.float}
+              hideBelow={imageTuning.heroPassport.hideBelow}
+              className="absolute -top-4 -right-8 w-[min(34rem,100%)] h-auto pointer-events-none z-0"
+            />
+
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.96 }}
               animate={introReady ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ duration: 0.85, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full max-w-[24rem]"
+              className="w-full max-w-[24rem] relative z-10"
             >
               {/* Frosted Health Passport Card Mock */}
               <div className="rounded-[var(--radius-card-sm)] p-5 sm:p-6 bg-white/70 backdrop-blur-md ring-1 ring-[var(--line)] shadow-[0_1rem_2.5rem_rgba(31,41,42,0.08)]">

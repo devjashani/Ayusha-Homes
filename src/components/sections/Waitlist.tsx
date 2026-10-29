@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { CONTENT } from '@/data/content';
+import { imageTuning } from '@/data/imageTuning';
 import { submitWaitlist } from '@/lib/submitWaitlist';
 import { Send, Mail, AlertCircle, Loader2 } from 'lucide-react';
 
@@ -37,6 +38,7 @@ export const Waitlist: React.FC<WaitlistProps> = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const {
     register,
@@ -79,8 +81,37 @@ export const Waitlist: React.FC<WaitlistProps> = ({
     <section
       id="waitlist"
       data-theme="waitlist"
-      className="relative z-70 rounded-t-[2rem] -mt-8 pt-20 pb-20 md:pb-24 overflow-hidden text-white bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)]"
+      className="relative z-70 rounded-t-[2rem] -mt-8 pt-20 pb-20 md:pb-24 overflow-hidden text-white"
     >
+      {/* Background Aurora Image (Cover) with slow background drift (+-2% over 30s) */}
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { x: ['-2%', '2%', '-2%'] }}
+        transition={prefersReducedMotion ? undefined : { duration: 30, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute inset-0 w-[108%] -left-[4%] h-full pointer-events-none z-0"
+        style={{ willChange: 'transform' }}
+        aria-hidden="true"
+      >
+        <img
+          src="/images/waitlist-bg.webp"
+          alt=""
+          width={2000}
+          height={1124}
+          decoding="async"
+          loading="lazy"
+          className="w-full h-full object-cover"
+          style={{ opacity: imageTuning.waitlistBg.opacity, filter: 'saturate(0.9) contrast(0.96)' }}
+        />
+      </motion.div>
+
+      {/* Accent Gradient Overlay (so aurora shows as soft texture with contrast >= 4.5:1) */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background: 'linear-gradient(135deg, rgba(45,97,119,.78), rgba(51,110,135,.62), rgba(62,135,147,.6))',
+        }}
+        aria-hidden="true"
+      />
+
       <div className="shell relative z-10">
         <div className="w-full max-w-3xl mx-auto">
           {/* Section Header */}

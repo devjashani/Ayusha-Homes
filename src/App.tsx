@@ -21,6 +21,8 @@ import { Team } from '@/components/sections/Team';
 import { Waitlist } from '@/components/sections/Waitlist';
 import { Footer } from '@/components/sections/Footer';
 import { TalkModal } from '@/components/ui/TalkModal';
+import { SoftImage } from '@/components/ui/SoftImage';
+import { imageTuning } from '@/data/imageTuning';
 
 export const App: React.FC = () => {
   // Mount adaptive rem grid scaling for displays > 1920px
@@ -83,6 +85,21 @@ export const App: React.FC = () => {
         >
           {/* Backwards-compatibility anchor for #problem */}
           <div id="problem" className="sr-only" aria-hidden="true" />
+
+          {/* Decorative background visual */}
+          <SoftImage
+            src="/images/problem-border.webp"
+            width={1600}
+            height={900}
+            opacity={imageTuning.problemBorder.opacity}
+            blend={imageTuning.problemBorder.blend}
+            mask={imageTuning.problemBorder.mask}
+            dualMask={imageTuning.problemBorder.dualMask}
+            parallax={imageTuning.problemBorder.parallax}
+            hideBelow={imageTuning.problemBorder.hideBelow}
+            className="top-2 right-0 w-[46%] max-w-[40rem] h-auto pointer-events-none z-0"
+          />
+
           <div className="shell relative z-10">
             <SectionHeader
               pageNumber="01"
@@ -127,15 +144,50 @@ export const App: React.FC = () => {
         >
           {/* Backwards-compatibility anchor for #how-it-works */}
           <div id="how-it-works" className="sr-only" aria-hidden="true" />
+
           <div className="shell relative z-10">
-            <SectionHeader
-              pageNumber="03"
-              kicker="03 / EMERGENCY WORKFLOW"
-              title="6-Step Emergency Response Lifecycle"
-              subtitle="Zero-delay clinical handover with immutable liability boundaries and cryptographic verification across jurisdictions."
-              dark={true}
-            />
-            <HowItWorks />
+            {/* Header Area: Two-column row on lg (>=1024px) */}
+            <div className="flex flex-col lg:flex-row items-stretch justify-between gap-8 lg:gap-12">
+              {/* Left Column (existing text block, ~58% width on lg) */}
+              <div className="w-full lg:w-[58%]">
+                <SectionHeader
+                  pageNumber="03"
+                  kicker="03 / EMERGENCY WORKFLOW"
+                  title="6-Step Emergency Response Lifecycle"
+                  subtitle="Zero-delay clinical handover with immutable liability boundaries and cryptographic verification across jurisdictions."
+                  dark={true}
+                  className="!mb-0 max-w-none"
+                />
+              </div>
+
+              {/* Right Column (~42% width, self-stretch, height equals left text block, hidden < 1024px) */}
+              <div
+                className="hidden lg:block relative w-full lg:w-[42%] self-stretch min-h-[18rem] max-h-[24rem] [overflow:clip] pointer-events-none z-0"
+                aria-hidden="true"
+              >
+                <SoftImage
+                  src="/images/how-phone.webp"
+                  width={1600}
+                  height={900}
+                  opacity={imageTuning.howPhone.opacity}
+                  blend={imageTuning.howPhone.blend}
+                  mask={imageTuning.howPhone.mask}
+                  dualMask={imageTuning.howPhone.dualMask}
+                  parallax={imageTuning.howPhone.parallax}
+                  float={imageTuning.howPhone.float}
+                  hideBelow={imageTuning.howPhone.hideBelow}
+                  objectFit="contain"
+                  objectPosition="right center"
+                  imgClassName="-translate-y-4"
+                  className="inset-0 w-full h-full pointer-events-none"
+                />
+              </div>
+            </div>
+
+            {/* Stepper: In its own row BELOW the header row with normal flow spacing (margin-top 3rem) */}
+            <div className="relative z-10 mt-12">
+              <HowItWorks />
+            </div>
           </div>
         </section>
 
@@ -148,6 +200,19 @@ export const App: React.FC = () => {
           style={{ '--accent': '#7EA294' } as React.CSSProperties}
           className="relative z-40 rounded-t-[2rem] -mt-8 pt-20 md:pt-24 pb-20 md:pb-24 bg-[var(--ink-2)] text-[var(--on-dark)] overflow-hidden"
         >
+          {/* Decorative background visual behind federated diagram */}
+          <SoftImage
+            src="/images/trust-network.webp"
+            width={1600}
+            height={900}
+            opacity={imageTuning.trustNetwork.opacity}
+            blend={imageTuning.trustNetwork.blend}
+            mask={imageTuning.trustNetwork.mask}
+            parallax={imageTuning.trustNetwork.parallax}
+            hideBelow={imageTuning.trustNetwork.hideBelow}
+            className="top-12 right-0 w-[48%] max-w-[42rem] h-auto pointer-events-none z-0"
+          />
+
           <div className="shell relative z-10">
             <SectionHeader
               pageNumber="04"
@@ -191,6 +256,20 @@ export const App: React.FC = () => {
           style={{ '--accent': '#4391C6' } as React.CSSProperties}
           className="relative z-60 rounded-t-[2rem] -mt-8 pt-20 md:pt-24 pb-20 md:pb-24 bg-[var(--surface)] overflow-hidden"
         >
+          {/* Decorative background visual across header */}
+          <SoftImage
+            src="/images/roadmap-path.webp"
+            width={1600}
+            height={900}
+            opacity={imageTuning.roadmapPath.opacity}
+            blend={imageTuning.roadmapPath.blend}
+            mask={imageTuning.roadmapPath.mask}
+            dualMask={imageTuning.roadmapPath.dualMask}
+            parallax={imageTuning.roadmapPath.parallax}
+            hideBelow={imageTuning.roadmapPath.hideBelow}
+            className="top-0 left-0 right-0 w-full h-[20rem] pointer-events-none z-0"
+          />
+
           <div className="shell relative z-10">
             <SectionHeader
               pageNumber="06"

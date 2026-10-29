@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 
 /**
- * LiquidReveal Background Canvas (Hero Section Only)
- * Base layer: Soft Azure / Sky Blue / Granite blobs on #ECF4F9.
- * Interactive top layer: Subtle dark deep lake & turquoise revealed smoothly along cursor trail.
+ * LiquidReveal Background Canvas (Hero Section)
+ * Base layer: hero-bg-light.webp (object-fit cover, always visible).
+ * Cursor-trail cover layer: hero-bg-dark.webp (revealed along cursor trail).
+ * Brush mechanics: brushRadius 143, decay 0.016, dpr min 2.
  */
 export const LiquidReveal: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,13 +27,22 @@ export const LiquidReveal: React.FC = () => {
     const isInteractive = !prefersReducedMotion && hasFinePointer;
 
     const brushRadius = 143;
-    const decay = 0.013;
+    const decay = 0.016;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     let width = 0;
     let height = 0;
 
-    // Offscreen cover canvas (Subtle Dark Lake / Oceanic Turquoise)
+    // Image assets
+    const lightImg = new Image();
+    lightImg.src = '/images/hero-bg-light.webp';
+    let lightLoaded = false;
+
+    const darkImg = new Image();
+    darkImg.src = '/images/hero-bg-dark.webp';
+    let darkLoaded = false;
+
+    // Offscreen cover canvas
     const coverCanvas = document.createElement('canvas');
     const coverCtx = coverCanvas.getContext('2d');
 
@@ -40,9 +50,30 @@ export const LiquidReveal: React.FC = () => {
     const maskCanvas = document.createElement('canvas');
     const maskCtx = maskCanvas.getContext('2d');
 
-    // Offscreen stamp brush canvas with smooth Gaussian-like radial falloff
+    // Offscreen stamp brush canvas with smooth radial gradient
     const brushCanvas = document.createElement('canvas');
     const brushCtx = brushCanvas.getContext('2d');
+
+    const drawCover = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number) => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const canvasRatio = w / h;
+      let renderW = w;
+      let renderH = h;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (canvasRatio > imgRatio) {
+        renderH = w / imgRatio;
+        offsetY = (h - renderH) / 2;
+      } else {
+        renderW = h * imgRatio;
+        offsetX = (w - renderW) / 2;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+    };
 
     const prepareBrush = () => {
       brushCanvas.width = brushRadius * 2 * dpr;
@@ -51,11 +82,10 @@ export const LiquidReveal: React.FC = () => {
 
       const center = brushRadius * dpr;
       const radGrad = brushCtx.createRadialGradient(center, center, 0, center, center, brushRadius * dpr);
-      // Feathered, silky falloff for ultra-smooth edge blending
-      radGrad.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
-      radGrad.addColorStop(0.22, 'rgba(255, 255, 255, 0.48)');
-      radGrad.addColorStop(0.48, 'rgba(255, 255, 255, 0.24)');
-      radGrad.addColorStop(0.75, 'rgba(255, 255, 255, 0.08)');
+      radGrad.addColorStop(0, 'rgba(255, 255, 255, 0.7)');
+      radGrad.addColorStop(0.25, 'rgba(255, 255, 255, 0.5)');
+      radGrad.addColorStop(0.55, 'rgba(255, 255, 255, 0.22)');
+      radGrad.addColorStop(0.85, 'rgba(255, 255, 255, 0.06)');
       radGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
       brushCtx.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
@@ -65,59 +95,26 @@ export const LiquidReveal: React.FC = () => {
       brushCtx.fill();
     };
 
-    const paintBaseLayer = () => {
-      if (!baseCtx) return;
-      baseCtx.fillStyle = '#ECF4F9';
-      baseCtx.fillRect(0, 0, width * dpr, height * dpr);
+    const redraw = () => {
+      if (width <= 0 || height <= 0) return;
+      const w = width * dpr;
+      const h = height * dpr;
 
-      // Soft Azure blob
-      const g1 = baseCtx.createRadialGradient(width * 0.25 * dpr, height * 0.35 * dpr, 0, width * 0.25 * dpr, height * 0.35 * dpr, width * 0.6 * dpr);
-      g1.addColorStop(0, 'rgba(99, 164, 206, 0.45)');
-      g1.addColorStop(1, 'rgba(99, 164, 206, 0)');
-      baseCtx.fillStyle = g1;
-      baseCtx.fillRect(0, 0, width * dpr, height * dpr);
-
-      // Sky Blue blob
-      const g2 = baseCtx.createRadialGradient(width * 0.75 * dpr, height * 0.5 * dpr, 0, width * 0.75 * dpr, height * 0.5 * dpr, width * 0.55 * dpr);
-      g2.addColorStop(0, 'rgba(67, 145, 198, 0.35)');
-      g2.addColorStop(1, 'rgba(67, 145, 198, 0)');
-      baseCtx.fillStyle = g2;
-      baseCtx.fillRect(0, 0, width * dpr, height * dpr);
-
-      // Granite Grey soft wash
-      const g3 = baseCtx.createRadialGradient(width * 0.5 * dpr, height * 0.85 * dpr, 0, width * 0.5 * dpr, height * 0.85 * dpr, width * 0.7 * dpr);
-      g3.addColorStop(0, 'rgba(181, 190, 186, 0.3)');
-      g3.addColorStop(1, 'rgba(181, 190, 186, 0)');
-      baseCtx.fillStyle = g3;
-      baseCtx.fillRect(0, 0, width * dpr, height * dpr);
+      if (lightLoaded && baseCtx) {
+        drawCover(baseCtx, lightImg, w, h);
+      }
+      if (isInteractive && darkLoaded && coverCtx) {
+        drawCover(coverCtx, darkImg, w, h);
+      }
     };
 
-    const paintCoverLayer = () => {
-      if (!coverCtx) return;
-      // Refined subtle dark lake tint (rich teal-slate, not harsh black)
-      coverCtx.fillStyle = 'rgba(38, 53, 56, 0.72)';
-      coverCtx.fillRect(0, 0, width * dpr, height * dpr);
-
-      // Deep Lake subtle gradient
-      const c1 = coverCtx.createRadialGradient(width * 0.3 * dpr, height * 0.4 * dpr, 0, width * 0.3 * dpr, height * 0.4 * dpr, width * 0.65 * dpr);
-      c1.addColorStop(0, 'rgba(51, 110, 135, 0.68)');
-      c1.addColorStop(1, 'rgba(51, 110, 135, 0)');
-      coverCtx.fillStyle = c1;
-      coverCtx.fillRect(0, 0, width * dpr, height * dpr);
-
-      // Turquoise Teal soft glow
-      const c2 = coverCtx.createRadialGradient(width * 0.7 * dpr, height * 0.65 * dpr, 0, width * 0.7 * dpr, height * 0.65 * dpr, width * 0.55 * dpr);
-      c2.addColorStop(0, 'rgba(84, 154, 152, 0.62)');
-      c2.addColorStop(1, 'rgba(84, 154, 152, 0)');
-      coverCtx.fillStyle = c2;
-      coverCtx.fillRect(0, 0, width * dpr, height * dpr);
-
-      // Gentle Oceanic Depth
-      const c3 = coverCtx.createRadialGradient(width * 0.5 * dpr, height * 0.15 * dpr, 0, width * 0.5 * dpr, height * 0.15 * dpr, width * 0.55 * dpr);
-      c3.addColorStop(0, 'rgba(45, 97, 119, 0.68)');
-      c3.addColorStop(1, 'rgba(45, 97, 119, 0)');
-      coverCtx.fillStyle = c3;
-      coverCtx.fillRect(0, 0, width * dpr, height * dpr);
+    lightImg.onload = () => {
+      lightLoaded = true;
+      redraw();
+    };
+    darkImg.onload = () => {
+      darkLoaded = true;
+      redraw();
     };
 
     const resize = () => {
@@ -132,10 +129,7 @@ export const LiquidReveal: React.FC = () => {
       });
 
       prepareBrush();
-      paintBaseLayer();
-      if (isInteractive) {
-        paintCoverLayer();
-      }
+      redraw();
     };
 
     resize();
@@ -161,7 +155,6 @@ export const LiquidReveal: React.FC = () => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      // Ignore points > radius outside canvas
       if (
         x < -brushRadius ||
         x > width + brushRadius ||
@@ -181,7 +174,6 @@ export const LiquidReveal: React.FC = () => {
         const dx = x - lastPoint.x;
         const dy = y - lastPoint.y;
         const dist = Math.hypot(dx, dy);
-        // Tighter step (~16px) for silky smooth ribbon connection without scalloping
         const step = Math.max(brushRadius * 0.12, 12);
 
         if (dist >= step) {
@@ -206,14 +198,14 @@ export const LiquidReveal: React.FC = () => {
     const tick = () => {
       if (!maskCtx || !trailCtx) return;
 
-      const currentFade = isDrawing ? decay : Math.min(decay + idleFrames * 0.003, 0.38);
+      const currentFade = isDrawing ? decay : Math.min(decay + idleFrames * 0.003, 0.4);
 
       // Fade mask canvas
       maskCtx.globalCompositeOperation = 'destination-out';
       maskCtx.fillStyle = `rgba(0, 0, 0, ${currentFade})`;
       maskCtx.fillRect(0, 0, width * dpr, height * dpr);
 
-      // Stamp queued points with smooth feathered brush
+      // Stamp queued points
       maskCtx.globalCompositeOperation = 'source-over';
       while (pointQueue.length > 0) {
         const pt = pointQueue.shift()!;
@@ -261,13 +253,13 @@ export const LiquidReveal: React.FC = () => {
       className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
       aria-hidden="true"
     >
-      {/* Base Canvas */}
+      {/* Base Canvas: hero-bg-light.webp */}
       <canvas ref={baseCanvasRef} className="absolute inset-0 w-full h-full" />
-      {/* Interactive Cursor Trail Canvas with subtle opacity & smooth blending */}
+      {/* Interactive Cursor Trail Canvas: hero-bg-dark.webp */}
       <canvas
         ref={trailCanvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ opacity: 0.72 }}
+        style={{ opacity: 0.85 }}
       />
     </div>
   );
