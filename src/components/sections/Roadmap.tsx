@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { CONTENT } from '@/data/content';
 import { Milestone, Gauge } from 'lucide-react';
 
@@ -8,136 +7,146 @@ export const Roadmap: React.FC = () => {
   return (
     <div className="relative pb-8 md:pb-12">
       <div className="w-full">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+        {/* Section Sub-header */}
+        <div className="mb-10 md:mb-12">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="inline-block mb-3"
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" aria-hidden="true" />
+            <span className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase font-mono">
               {CONTENT.roadmap.tag}
             </span>
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+          <motion.h3
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="section-headline mb-4"
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[var(--fg)] max-w-2xl leading-[1.15]"
           >
             {CONTENT.roadmap.headline}
-          </motion.h2>
+          </motion.h3>
         </div>
 
         {/* 4 Roadmap Phases Timeline */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 relative">
-          {CONTENT.roadmap.phases.map((phase, idx) => (
+        <div className="relative mb-16">
+          {/* Scroll-drawing vertical 1px accent line (hidden on mobile, visible on desktop) */}
+          <div className="hidden lg:block absolute left-1/2 top-4 bottom-4 w-px bg-[var(--line)] -translate-x-1/2" aria-hidden="true">
             <motion.div
-              key={phase.title}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              className="w-full bg-[var(--accent)] origin-top"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <GlassPanel
-                variant="card"
-                className={`h-full flex flex-col justify-between p-6 md:p-7 transition-all duration-300 ${
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ height: '100%' }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            {CONTENT.roadmap.phases.map((phase, idx) => (
+              <motion.div
+                key={phase.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{
+                  duration: 0.6,
+                  delay: idx * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className={`rounded-[var(--radius-card)] p-6 md:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${
                   phase.isCurrent
-                    ? 'border-[var(--accent)] bg-white/75 shadow-lg ring-2 ring-[var(--accent)]/20'
-                    : 'border-white/70 bg-white/40'
+                    ? 'border-2 border-[var(--accent)] bg-white shadow-md'
+                    : 'border border-[var(--line)] bg-white/70'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className={`text-xs font-bold px-2.5 py-1 rounded-md ${
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-md font-mono ${
                         phase.isCurrent
                           ? 'bg-[var(--accent)] text-white'
-                          : 'bg-black/5 text-[var(--muted)]'
+                          : 'bg-[var(--surface)] text-[var(--muted)]'
                       }`}
                     >
                       {phase.timeframe}
                     </span>
                     {phase.isCurrent && (
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-[var(--accent-text)] uppercase tracking-wider">
-                        <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
+                      <span className="flex items-center gap-1.5 text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-ping" />
                         Inaugural Target
                       </span>
                     )}
                   </div>
 
-                  <h3 className="font-semibold text-xl text-[var(--ink)] mb-3">
+                  <h4 className="font-semibold text-xl text-[var(--ink)] mb-3 leading-snug">
                     {phase.title}
-                  </h3>
+                  </h4>
 
-                  <p className="text-xs md:text-sm text-[var(--muted)] leading-relaxed">
+                  <p className="text-sm text-[var(--muted)] leading-relaxed">
                     {phase.description}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-black/5 flex items-center justify-between text-xs text-[var(--muted)]">
-                  <span>Milestone 0{idx + 1}</span>
+                <div className="mt-6 pt-3 border-t border-[var(--line)] flex items-center justify-between text-xs text-[var(--muted)]">
+                  <span className="font-mono">Milestone 0{idx + 1}</span>
                   <Milestone className="w-3.5 h-3.5 text-[var(--accent)]" />
                 </div>
-              </GlassPanel>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* How We'll Know It's Working (4 Success Metrics) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mb-12"
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-14"
         >
-          <div className="text-center mb-6">
-            <h3 className="text-lg md:text-xl font-bold text-[var(--ink)]">
+          <div className="mb-6">
+            <h4 className="text-lg md:text-xl font-semibold text-[var(--ink)]">
               How we'll know it's working:
-            </h3>
+            </h4>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CONTENT.roadmap.metrics.map((metric, idx) => (
-              <GlassPanel
+              <div
                 key={idx}
-                variant="card"
-                className="p-5 bg-white/45 border-white/70"
+                className="rounded-[var(--radius-card-sm)] p-5 bg-white border border-[var(--line)]"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/12 text-[var(--accent-text)] flex items-center justify-center font-bold text-xs">
+                  <div className="w-7 h-7 rounded-lg bg-[var(--surface)] text-[var(--accent)] flex items-center justify-center shrink-0">
                     <Gauge className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-sm text-[var(--ink)]">{metric.title}</h4>
+                  <h5 className="font-semibold text-sm text-[var(--ink)]">{metric.title}</h5>
                 </div>
                 <p className="text-xs text-[var(--muted)] leading-relaxed">
                   {metric.target}
                 </p>
-              </GlassPanel>
+              </div>
             ))}
           </div>
         </motion.div>
 
         {/* Closing Axiom Statement */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-[var(--radius-card)] p-6 md:p-8 bg-[var(--ink)] text-[var(--on-dark)] text-center border border-white/10 shadow-xl"
         >
-          <GlassPanel
-            variant="card"
-            className="p-6 md:p-8 bg-[var(--ink)] text-[var(--on-dark)] text-center border-white/10 shadow-xl"
-          >
-            <p className="font-display text-base md:text-xl text-[var(--on-dark)] italic font-medium max-w-3xl mx-auto">
-              "{CONTENT.roadmap.closingStatement}"
-            </p>
-          </GlassPanel>
+          <p className="text-base md:text-xl text-[var(--on-dark)] italic font-medium max-w-3xl mx-auto leading-relaxed">
+            "{CONTENT.roadmap.closingStatement}"
+          </p>
         </motion.div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { CONTENT } from '@/data/content';
 import { Target } from 'lucide-react';
 
@@ -8,38 +7,39 @@ export const Team: React.FC = () => {
   const founder = CONTENT.team.founder;
 
   return (
-    <div className="relative pt-8 md:pt-12">
+    <div className="relative pt-12 md:pt-16">
       <div className="w-full">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
+        {/* Section Sub-header */}
+        <div className="mb-10 md:mb-12">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="inline-block mb-3"
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 mb-3"
           >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" aria-hidden="true" />
+            <span className="text-xs font-semibold tracking-wider text-[var(--muted)] uppercase font-mono">
               {CONTENT.team.tag}
             </span>
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+          <motion.h3
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="section-headline mb-4"
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[var(--fg)] max-w-2xl leading-[1.15]"
           >
             {CONTENT.team.headline}
-          </motion.h2>
+          </motion.h3>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[var(--muted)] font-normal"
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base md:text-lg text-[var(--muted)] font-normal mt-3 max-w-2xl"
           >
             {CONTENT.team.subhead}
           </motion.p>
@@ -47,35 +47,32 @@ export const Team: React.FC = () => {
 
         {/* Founder Card */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-14"
         >
-          <GlassPanel
-            variant="card"
-            className="p-6 md:p-10 bg-white/60 border-white/80 shadow-xl"
-          >
+          <div className="rounded-[var(--radius-card)] p-6 md:p-10 bg-white border border-[var(--line)] shadow-sm">
             <div className="flex flex-col lg:flex-row items-start gap-8">
               {/* Initials Avatar */}
               <div className="flex flex-col items-center sm:items-start shrink-0">
-                <div className="w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-[var(--ink)] to-[var(--brand)] text-white flex items-center justify-center font-bold text-3xl md:text-4xl shadow-xl border-2 border-white/50">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-[var(--ink)] text-white flex items-center justify-center font-bold text-2xl md:text-3xl shadow-md">
                   {founder.initials}
                 </div>
                 <div className="mt-3 text-center sm:text-left">
-                  <h3 className="font-bold text-xl md:text-2xl text-[var(--ink)]">
+                  <h4 className="font-semibold text-xl md:text-2xl text-[var(--ink)]">
                     {founder.name}
-                  </h3>
-                  <span className="text-xs md:text-sm font-semibold text-[var(--accent-text)]">
+                  </h4>
+                  <span className="text-xs md:text-sm font-semibold text-[var(--accent)] font-mono">
                     {founder.role}
                   </span>
                 </div>
               </div>
 
               {/* Bio & Triangle Context */}
-              <div className="flex-1">
-                <p className="text-sm md:text-base text-[var(--ink)] font-medium leading-relaxed mb-6">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm md:text-base text-[var(--ink)] font-normal leading-relaxed mb-6">
                   {founder.summary}
                 </p>
 
@@ -83,7 +80,7 @@ export const Team: React.FC = () => {
                   {founder.experiencePoints.map((point, pIdx) => (
                     <div
                       key={pIdx}
-                      className="p-4 rounded-2xl bg-white/60 border border-white/80 text-xs md:text-sm text-[var(--muted)] leading-relaxed shadow-xs"
+                      className="p-4 rounded-[var(--radius-card-sm)] bg-[var(--surface)] border border-[var(--line)] text-xs md:text-sm text-[var(--muted)] leading-relaxed"
                     >
                       {point}
                     </div>
@@ -91,15 +88,15 @@ export const Team: React.FC = () => {
                 </div>
               </div>
             </div>
-          </GlassPanel>
+          </div>
         </motion.div>
 
         {/* Roles Being Built Row */}
         <div className="mb-12">
-          <div className="text-center mb-6">
-            <h3 className="text-base md:text-lg font-bold text-[var(--ink)]">
+          <div className="mb-6">
+            <h4 className="text-base md:text-lg font-semibold text-[var(--ink)]">
               Specialist Advisory & Architecture Roles Being Assembled
-            </h3>
+            </h4>
             <p className="text-xs text-[var(--muted)] mt-1">
               Curated capabilities for corridor launch and privacy governance
             </p>
@@ -107,26 +104,25 @@ export const Team: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {CONTENT.team.rolesBeingBuilt.map((role) => (
-              <GlassPanel
+              <div
                 key={role.code}
-                variant="card"
-                className="p-5 flex flex-col justify-between bg-white/45 border-white/70 hover:border-[var(--accent)]/40 transition-all"
+                className="rounded-[var(--radius-card-sm)] p-5 flex flex-col justify-between bg-white border border-[var(--line)] hover:-translate-y-1 hover:shadow-md transition-all duration-300"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/12 text-[var(--accent-text)] flex items-center justify-center font-bold text-sm mb-3 font-mono">
+                  <div className="w-9 h-9 rounded-lg bg-[var(--surface)] text-[var(--accent)] flex items-center justify-center font-bold text-xs mb-3 font-mono">
                     {role.code}
                   </div>
-                  <h4 className="font-bold text-sm text-[var(--ink)] mb-1.5">
+                  <h5 className="font-semibold text-sm text-[var(--ink)] mb-1.5 leading-snug">
                     {role.title}
-                  </h4>
+                  </h5>
                   <p className="text-xs text-[var(--muted)] leading-relaxed">
                     {role.focus}
                   </p>
                 </div>
-                <div className="mt-4 pt-2 border-t border-black/5 text-[10px] font-bold text-[var(--accent-text)] uppercase tracking-wider">
+                <div className="mt-4 pt-2 border-t border-[var(--line)] text-[10px] font-semibold text-[var(--accent)] uppercase tracking-wider font-mono">
                   Active Recruitment
                 </div>
-              </GlassPanel>
+              </div>
             ))}
           </div>
         </div>
@@ -135,18 +131,15 @@ export const Team: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <GlassPanel
-            variant="card"
-            className="p-5 md:p-6 bg-white/50 border-[var(--accent)]/35 shadow-md text-center"
-          >
-            <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-[var(--ink)] font-semibold">
-              <Target className="w-4 h-4 text-[var(--accent)]" />
+          <div className="rounded-[var(--radius-card-sm)] p-5 md:p-6 bg-white border border-[var(--line)] text-center shadow-xs">
+            <div className="flex items-center justify-center gap-2.5 text-xs md:text-sm text-[var(--ink)] font-semibold">
+              <Target className="w-4 h-4 text-[var(--accent)] shrink-0" />
               <span>{CONTENT.brand.milestoneNotice}</span>
             </div>
-          </GlassPanel>
+          </div>
         </motion.div>
       </div>
     </div>

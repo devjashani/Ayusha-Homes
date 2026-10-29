@@ -1,284 +1,298 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { CONTENT } from '@/data/content';
-import { MagneticButton } from '@/components/ui/MagneticButton';
+import { LiquidReveal } from '@/components/ui/LiquidReveal';
+import { PillButton } from '@/components/ui/PillButton';
+import { scrollToTarget } from '@/hooks/useLenis';
 import {
   ShieldAlert,
   Lock,
   ChevronDown,
-  ArrowRight,
   Activity,
   User,
   HeartPulse,
-  Sparkles,
   PlaneTakeoff,
-  Clock,
   Compass,
+  Sparkles,
+  Clock,
 } from 'lucide-react';
 
 interface HeroProps {
+  introReady?: boolean;
   onCheckReadiness: (from: string, to: string, persona: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onCheckReadiness }) => {
-  const [fromCountry, setFromCountry] = React.useState('IND');
-  const [toCountry, setToCountry] = React.useState('UAE');
-  const [persona, setPersona] = React.useState('traveler');
+export const Hero: React.FC<HeroProps> = ({ introReady = true, onCheckReadiness }) => {
+  const [fromCountry, setFromCountry] = useState('IND');
+  const [toCountry, setToCountry] = useState('UAE');
+  const [persona, setPersona] = useState('traveler');
 
-  const headlineWords = CONTENT.brand.heroHeadline.split(' ');
+  // Split H1 into natural lines for line reveal
+  const h1Lines = ["Your health record", "shouldn't stop at the border."];
 
   const handleReadinessClick = (e: React.FormEvent) => {
     e.preventDefault();
     onCheckReadiness(fromCountry, toCountry, persona);
-    const target = document.querySelector('#waitlist');
-    if (target) {
-      const top = (target as HTMLElement).offsetTop - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    scrollToTarget('#waitlist');
   };
 
-  const scrollToHowItWorks = (e: React.MouseEvent) => {
+  const scrollToSection = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
-    const target = document.querySelector('#how');
-    if (target) {
-      const top = (target as HTMLElement).offsetTop - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    scrollToTarget(id);
   };
 
   return (
-    <section id="home" data-theme="hero" className="relative min-h-[100svh] pt-32 md:pt-40 pb-10 md:pb-14 flex flex-col justify-center items-center overflow-hidden">
-      <div className="page-container relative z-10 flex flex-col items-center">
-        {/* Top Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -16, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6"
-        >
-          <GlassPanel
-            variant="chip"
-            className="inline-flex items-center gap-2 py-1.5 px-4 bg-white/60 border-[var(--accent)]/35 shadow-sm"
-          >
-            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
-            <span className="text-xs md:text-sm font-semibold tracking-wide text-[var(--accent-text)]">
-              {CONTENT.brand.heroBadge}
-            </span>
-            <span className="text-black/20">•</span>
-            <span className="text-xs text-[var(--muted)] font-medium hidden sm:inline">
-              Pre-launch Concept
-            </span>
-          </GlassPanel>
-        </motion.div>
+    <section className="hero-stacked min-h-[100lvh] flex flex-col justify-between pt-28 sm:pt-36 pb-12 sm:pb-16 relative">
+      {/* Liquid Canvas Reveal Layer */}
+      <LiquidReveal />
 
-        {/* Main Headline with word-by-word reveal */}
-        <div className="text-center max-w-4xl mx-auto mb-6 overflow-hidden">
-          <h1 className="hero-headline flex flex-wrap justify-center gap-x-3 gap-y-1">
-            {headlineWords.map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 35, rotateZ: 1.5 }}
-                animate={{ opacity: 1, y: 0, rotateZ: 0 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.15 + i * 0.045,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="inline-block"
+      {/* Legibility Overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(255,255,255,0.35), transparent 40%, rgba(255,255,255,0.35))',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Giant Decorative AYUSHA Watermark */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={introReady ? { opacity: 0.35, y: 0 } : {}}
+        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="watermark-text absolute bottom-28 left-0 right-0 text-center text-white pointer-events-none z-[2] leading-none"
+        aria-hidden="true"
+      >
+        AYUSHA
+      </motion.div>
+
+      {/* Main Shell Content */}
+      <div className="shell relative z-10 w-full my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center mb-12">
+          {/* Left Column (Span 7) */}
+          <div className="lg:col-span-7 flex flex-col items-start">
+            {/* Existing Badge styled as Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={introReady ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur-sm border border-[var(--line)] shadow-xs mb-5"
+            >
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
+              <span className="text-xs font-semibold tracking-wide text-[var(--accent)]">
+                {CONTENT.brand.heroBadge}
+              </span>
+              <span className="text-black/20">•</span>
+              <span className="text-xs text-[var(--muted)] font-medium">
+                Pre-launch Concept
+              </span>
+            </motion.div>
+
+            {/* H1 Split into lines with Line Reveal */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-[var(--fg)] leading-[1.04] max-w-[18ch] mb-6">
+              {h1Lines.map((line, idx) => (
+                <span key={idx} className="block overflow-hidden pb-1">
+                  <motion.span
+                    initial={{ y: '100%', opacity: 0 }}
+                    animate={introReady ? { y: 0, opacity: 1 } : {}}
+                    transition={{
+                      duration: 0.9,
+                      delay: 0.25 + idx * 0.12,
+                      ease: [0.215, 0.61, 0.355, 1],
+                    }}
+                    className="inline-block"
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
+
+            {/* Existing Paragraph */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={introReady ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base sm:text-lg text-[var(--muted)] max-w-xl font-normal leading-relaxed mb-8"
+            >
+              {CONTENT.brand.heroSubcopy}
+            </motion.p>
+
+            {/* Existing Two CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={introReady ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap items-center gap-3.5"
+            >
+              <PillButton
+                variant="dark"
+                withArrow={true}
+                href="#waitlist"
+                onClick={(e) => scrollToSection(e, '#waitlist')}
               >
-                {word}
-              </motion.span>
-            ))}
-          </h1>
+                Join the pilot
+              </PillButton>
+
+              <PillButton
+                variant="outline"
+                href="#how"
+                onClick={(e) => scrollToSection(e, '#how')}
+              >
+                See how it works
+              </PillButton>
+            </motion.div>
+          </div>
+
+          {/* Right Column (Span 5, aligned end on lg) */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              animate={introReady ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.85, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-[24rem]"
+            >
+              {/* Frosted Health Passport Card Mock */}
+              <div className="rounded-[var(--radius-card-sm)] p-5 sm:p-6 bg-white/70 backdrop-blur-md ring-1 ring-[var(--line)] shadow-[0_1rem_2.5rem_rgba(31,41,42,0.08)]">
+                {/* Header */}
+                <div className="flex items-center justify-between gap-2.5 pb-4 border-b border-[var(--line)]">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--surface)] text-[var(--accent)] flex items-center justify-center border border-[var(--line)] shrink-0">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="font-semibold text-sm text-[var(--fg)] whitespace-nowrap">
+                          {CONTENT.heroPassportMock.holderName}
+                        </span>
+                        <span className="px-1.5 py-0.5 rounded text-[0.5625rem] font-bold bg-[var(--accent)]/15 text-[var(--accent)] whitespace-nowrap">
+                          ABHA / PASSPORT LINKED
+                        </span>
+                      </div>
+                      <p className="text-xs text-[var(--muted)] font-medium flex items-center gap-1 mt-0.5 whitespace-nowrap">
+                        <Activity className="w-3 h-3 text-[var(--good)] shrink-0" />
+                        Blood: <strong className="text-[var(--fg)]">{CONTENT.heroPassportMock.bloodGroup}</strong>
+                        <span className="text-black/20">•</span>
+                        <span>AYU-8492-X</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--good)]/15 text-[var(--ink)] text-[0.6875rem] font-semibold border border-[var(--good)]/30 shrink-0 whitespace-nowrap">
+                    <Lock className="w-3 h-3 text-[var(--accent)] shrink-0" />
+                    <span className="whitespace-nowrap">Federated</span>
+                  </div>
+                </div>
+
+                {/* Inner Rows as Rounded Tiles */}
+                <div className="space-y-2.5 my-4 text-xs">
+                  {/* Allergies Tile */}
+                  <div className="p-3 rounded-xl bg-white/80 border border-[var(--line)] shadow-2xs">
+                    <span className="text-[0.6875rem] font-bold tracking-wider text-[var(--ink)] uppercase flex items-center gap-1 mb-1.5">
+                      <ShieldAlert className="w-3.5 h-3.5 text-rose-600" /> High-Risk Allergies
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {CONTENT.heroPassportMock.allergies.map((allergy) => (
+                        <span
+                          key={allergy}
+                          className="px-2 py-0.5 rounded bg-rose-50 text-rose-800 font-medium text-[0.6875rem] border border-rose-200/60"
+                        >
+                          {allergy}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Medications Tile */}
+                  <div className="p-3 rounded-xl bg-white/80 border border-[var(--line)] shadow-2xs">
+                    <span className="text-[0.6875rem] font-bold tracking-wider text-[var(--accent)] uppercase flex items-center gap-1 mb-1">
+                      <HeartPulse className="w-3.5 h-3.5" /> Active Medications
+                    </span>
+                    <p className="text-[var(--fg)] font-medium leading-snug">
+                      {CONTENT.heroPassportMock.medications.join(' • ')}
+                    </p>
+                  </div>
+
+                  {/* Conditions & Contact Row */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-2.5 rounded-xl bg-white/80 border border-[var(--line)] shadow-2xs">
+                      <span className="text-[0.625rem] font-semibold tracking-wider text-[var(--muted)] uppercase block mb-0.5">
+                        Conditions
+                      </span>
+                      <p className="text-[var(--fg)] font-medium text-[0.6875rem] leading-tight">
+                        {CONTENT.heroPassportMock.conditions[0]}
+                      </p>
+                    </div>
+                    <div className="p-2.5 rounded-xl bg-white/80 border border-[var(--line)] shadow-2xs">
+                      <span className="text-[0.625rem] font-semibold tracking-wider text-[var(--muted)] uppercase block mb-0.5">
+                        Next of Kin
+                      </span>
+                      <p className="text-[var(--fg)] font-medium text-[0.6875rem] leading-tight truncate">
+                        {CONTENT.heroPassportMock.emergencyContact}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Token Footer */}
+                <div className="pt-3 border-t border-[var(--line)] flex items-center justify-between text-[0.6875rem] text-[var(--muted)]">
+                  <div className="flex items-center gap-1.5 font-medium text-[var(--accent)]">
+                    <Clock className="w-3 h-3" />
+                    <span>{CONTENT.heroPassportMock.shareStatus}</span>
+                  </div>
+                  <span className="font-mono text-[0.625rem]">Ed25519 Ephemeral</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
-        {/* Sub-copy */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center text-base md:text-lg lg:text-xl text-[var(--muted)] max-w-2xl mx-auto font-normal leading-relaxed mb-9"
-        >
-          {CONTENT.brand.heroSubcopy}
-        </motion.p>
-
-        {/* CTAs */}
+        {/* Existing Booking-Style Route Bar (Full-width below grid as a frosted panel) */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.62, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row items-center gap-3.5 mb-14"
+          initial={{ opacity: 0, y: 24 }}
+          animate={introReady ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full"
         >
-          <MagneticButton href="#waitlist">
-            <span className="px-8 py-3.5 rounded-full font-semibold text-sm md:text-base bg-[var(--brand)] text-white shadow-lg hover:bg-[var(--brand-hover)] transition-all flex items-center gap-2 group">
-              <span>Join the pilot</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </span>
-          </MagneticButton>
-
-          <a
-            href="#how"
-            onClick={scrollToHowItWorks}
-            className="px-7 py-3.5 rounded-full font-medium text-sm md:text-base text-[var(--ink)] bg-white/60 hover:bg-white/85 border border-white/70 shadow-sm transition-all backdrop-blur-md"
-          >
-            See how it works
-          </a>
-        </motion.div>
-
-        {/* Interactive Glass "Health Passport" Card Mock with Tilt */}
-        <motion.div
-          initial={{ opacity: 0, y: 35, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-2xl mx-auto mb-12"
-        >
-          <GlassPanel
-            variant="card"
-            tiltOnHover={true}
-            className="p-6 md:p-8 border-white/80 bg-white/45 shadow-xl relative cursor-default"
-          >
-            {/* Header of Passport */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-black/5">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-[var(--accent)]/12 text-[var(--accent-text)] flex items-center justify-center border border-[var(--accent)]/35">
-                  <User className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-base md:text-lg text-[var(--ink)]">
-                      {CONTENT.heroPassportMock.holderName}
-                    </h3>
-                    <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[var(--accent)]/15 text-[var(--accent-text)]">
-                      ABHA / PASSPORT LINKED
-                    </span>
-                  </div>
-                  <p className="text-xs text-[var(--muted)] font-medium flex items-center gap-1.5 mt-0.5">
-                    <Activity className="w-3.5 h-3.5 text-[var(--status-success)]" />
-                    Blood Group: <strong className="text-[var(--ink)]">{CONTENT.heroPassportMock.bloodGroup}</strong>
-                    <span className="text-black/20">•</span>
-                    Verified Health ID: <span className="font-mono text-[11px]">AYU-8492-X</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Security Pill */}
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--status-success)]/15 text-[var(--ink)] text-xs font-semibold border border-[var(--status-success)]/30">
-                <Lock className="w-3 h-3 text-[var(--status-success)]" />
-                <span>Zero-Warehouse Federated</span>
-              </div>
-            </div>
-
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5 text-xs md:text-sm">
-              <div className="p-3.5 rounded-2xl bg-white/50 border border-white/70 shadow-xs">
-                <span className="text-[11px] font-semibold tracking-wider text-[var(--status-risk)] uppercase flex items-center gap-1.5 mb-1.5">
-                  <ShieldAlert className="w-3.5 h-3.5" /> High-Risk Allergies
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {CONTENT.heroPassportMock.allergies.map((allergy) => (
-                    <span
-                      key={allergy}
-                      className="px-2.5 py-1 rounded-md bg-[var(--status-risk)]/10 text-[var(--ink)] font-medium text-xs border border-[var(--status-risk)]/25"
-                    >
-                      {allergy}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white/50 border border-white/70 shadow-xs">
-                <span className="text-[11px] font-semibold tracking-wider text-[var(--accent-text)] uppercase flex items-center gap-1.5 mb-1.5">
-                  <HeartPulse className="w-3.5 h-3.5" /> Active Medications
-                </span>
-                <div className="flex flex-col gap-1">
-                  {CONTENT.heroPassportMock.medications.map((med) => (
-                    <span key={med} className="text-[var(--ink)] font-medium text-xs">
-                      • {med}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white/50 border border-white/70 shadow-xs">
-                <span className="text-[11px] font-semibold tracking-wider text-[var(--muted)] uppercase mb-1 block">
-                  Chronic / Monitored Conditions
-                </span>
-                <p className="text-[var(--ink)] font-medium text-xs">
-                  {CONTENT.heroPassportMock.conditions.join(', ')}
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white/50 border border-white/70 shadow-xs">
-                <span className="text-[11px] font-semibold tracking-wider text-[var(--muted)] uppercase mb-1 block">
-                  Emergency Next of Kin
-                </span>
-                <p className="text-[var(--ink)] font-medium text-xs">
-                  {CONTENT.heroPassportMock.emergencyContact}
-                </p>
-              </div>
-            </div>
-
-            {/* Time-limited Token Footer */}
-            <div className="pt-3.5 border-t border-black/5 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted)]">
-              <div className="flex items-center gap-1.5 font-medium text-[var(--accent-text)]">
-                <Clock className="w-3.5 h-3.5 animate-spin text-[var(--accent)]" style={{ animationDuration: '6s' }} />
-                <span>{CONTENT.heroPassportMock.shareStatus}</span>
-              </div>
-              <span className="text-[11px] text-[var(--muted)]/80 font-mono">
-                Decryption Key: Ephemeral Ed25519
-              </span>
-            </div>
-          </GlassPanel>
-        </motion.div>
-
-        {/* Glass Quick-Action Bar (In the style of reference booking bar) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-4xl mx-auto"
-        >
-          <GlassPanel
-            variant="card"
-            liquidRefraction={true}
-            className="p-4 md:p-5 rounded-[28px] md:rounded-full bg-white/60 border-white/80 shadow-lg"
-          >
-            <form onSubmit={handleReadinessClick} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 items-center">
-              {/* Travelling from */}
-              <div className="flex flex-col px-3 py-1.5">
-                <label className="text-[11px] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1 mb-1">
+          <div className="rounded-[var(--radius-card-sm)] p-4 sm:p-5 bg-white/75 backdrop-blur-md border border-[var(--line)] shadow-[0_0.75rem_2rem_rgba(31,41,42,0.06)]">
+            <form
+              onSubmit={handleReadinessClick}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
+            >
+              {/* Departure */}
+              <div className="flex flex-col px-3 py-1">
+                <label className="text-[0.6875rem] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1.5 mb-1">
                   <PlaneTakeoff className="w-3.5 h-3.5 text-[var(--accent)]" />
                   Travelling from
                 </label>
                 <select
                   value={fromCountry}
                   onChange={(e) => setFromCountry(e.target.value)}
-                  className="bg-transparent text-sm font-semibold text-[var(--ink)] outline-none cursor-pointer"
+                  className="bg-transparent text-sm font-semibold text-[var(--fg)] outline-none cursor-pointer"
                   aria-label="Departure Country"
                 >
                   {CONTENT.quickActionDefault.fromCountries.map((c) => (
-                    <option key={c.code} value={c.code} className="bg-white text-[var(--ink)]">
+                    <option key={c.code} value={c.code} className="bg-white text-[var(--fg)]">
                       {c.name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Travelling to */}
-              <div className="flex flex-col px-3 py-1.5 border-t sm:border-t-0 sm:border-l border-[var(--line)]">
-                <label className="text-[11px] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1 mb-1">
-                  <Compass className="w-3.5 h-3.5 text-[var(--accent)]" />
+              {/* Destination */}
+              <div className="flex flex-col px-3 py-1 border-t sm:border-t-0 sm:border-l border-[var(--line)]">
+                <label className="text-[0.6875rem] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1.5 mb-1">
+                  <Compass className="w-3.5 h-3.5 text-[var(--accent-to)]" />
                   Destination
                 </label>
                 <select
                   value={toCountry}
                   onChange={(e) => setToCountry(e.target.value)}
-                  className="bg-transparent text-sm font-semibold text-[var(--ink)] outline-none cursor-pointer"
+                  className="bg-transparent text-sm font-semibold text-[var(--fg)] outline-none cursor-pointer"
                   aria-label="Destination Country"
                 >
                   {CONTENT.quickActionDefault.toCountries.map((c) => (
-                    <option key={c.code} value={c.code} className="bg-white text-[var(--ink)]">
+                    <option key={c.code} value={c.code} className="bg-white text-[var(--fg)]">
                       {c.name}
                     </option>
                   ))}
@@ -286,19 +300,19 @@ export const Hero: React.FC<HeroProps> = ({ onCheckReadiness }) => {
               </div>
 
               {/* Persona */}
-              <div className="flex flex-col px-3 py-1.5 border-t md:border-t-0 md:border-l border-[var(--line)]">
-                <label className="text-[11px] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1 mb-1">
+              <div className="flex flex-col px-3 py-1 border-t lg:border-t-0 lg:border-l border-[var(--line)]">
+                <label className="text-[0.6875rem] font-semibold tracking-wider text-[var(--muted)] uppercase flex items-center gap-1.5 mb-1">
                   <Sparkles className="w-3.5 h-3.5 text-[var(--accent)]" />
                   I am a
                 </label>
                 <select
                   value={persona}
                   onChange={(e) => setPersona(e.target.value)}
-                  className="bg-transparent text-sm font-semibold text-[var(--ink)] outline-none cursor-pointer"
+                  className="bg-transparent text-sm font-semibold text-[var(--fg)] outline-none cursor-pointer"
                   aria-label="User Profile Persona"
                 >
                   {CONTENT.quickActionDefault.personaOptions.map((p) => (
-                    <option key={p.id} value={p.id} className="bg-white text-[var(--ink)]">
+                    <option key={p.id} value={p.id} className="bg-white text-[var(--fg)]">
                       {p.label}
                     </option>
                   ))}
@@ -307,28 +321,31 @@ export const Hero: React.FC<HeroProps> = ({ onCheckReadiness }) => {
 
               {/* Action Button */}
               <div className="pt-2 sm:pt-0">
-                <button
+                <PillButton
                   type="submit"
-                  className="w-full h-12 rounded-full font-semibold text-xs md:text-sm bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-white shadow-md transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+                  variant="accent"
+                  withArrow={true}
+                  className="w-full justify-between"
                 >
-                  <span>Check readiness</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  Check readiness
+                </PillButton>
               </div>
             </form>
-          </GlassPanel>
+          </div>
         </motion.div>
 
-        {/* Scroll down indicator */}
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-          className="mt-14 flex flex-col items-center gap-1.5 text-xs text-[var(--muted)]/70 cursor-pointer select-none"
-          onClick={scrollToHowItWorks}
-        >
-          <span className="font-medium tracking-wide uppercase text-[10px]">Explore Architecture</span>
-          <ChevronDown className="w-4 h-4 text-[var(--accent)]" />
-        </motion.div>
+        {/* Existing Scroll Cue */}
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={(e) => scrollToSection(e, '#why')}
+            className="flex flex-col items-center gap-1 text-[0.6875rem] font-mono tracking-widest text-[var(--muted)] uppercase cursor-pointer hover:text-[var(--fg)] transition-colors"
+            aria-label="Scroll to Why It Matters"
+          >
+            <span>EXPLORE</span>
+            <ChevronDown className="w-4 h-4 text-[var(--accent)] animate-bounce" />
+          </button>
+        </div>
       </div>
     </section>
   );

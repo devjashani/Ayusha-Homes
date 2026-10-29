@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { CONTENT } from '@/data/content';
 import { Fingerprint, FileText, Share2, Layers, CheckCircle2 } from 'lucide-react';
 
 export const Solution: React.FC = () => {
   const [selectedPillar, setSelectedPillar] = useState<string>('identity');
+
   const icons: Record<string, React.ElementType> = {
     identity: Fingerprint,
     information: FileText,
@@ -13,158 +13,122 @@ export const Solution: React.FC = () => {
   };
 
   return (
-    <div className="relative pb-10 md:pb-16">
-      <div className="w-full">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="inline-block mb-3"
-          >
-            <span className="text-xs md:text-sm font-semibold tracking-wider text-[var(--accent-text)] uppercase bg-[var(--accent)]/12 px-3.5 py-1.5 rounded-full border border-[var(--accent)]/35">
-              {CONTENT.solution.tag}
-            </span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="section-headline mb-4"
-          >
-            {CONTENT.solution.headline}
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-base md:text-lg text-[var(--muted)] font-normal"
-          >
-            {CONTENT.solution.subhead}
-          </motion.p>
-        </div>
-
-        {/* Layered Architectural Diagram */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-14 relative"
-        >
-          {/* Top Layer: AYUSHA Continuity Layer (Floating Glass) */}
-          <GlassPanel
-            variant="card"
-            liquidRefraction={true}
-            className="p-8 md:p-10 mb-6 bg-white/70 border-white/90 shadow-xl relative z-20"
-          >
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[var(--line)]">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[var(--brand)] to-[var(--brand-soft)] text-white flex items-center justify-center shadow-md">
-                  <Layers className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg md:text-xl text-[var(--ink)]">
-                    AYUSHA — The Continuity Layer
-                  </h3>
-                  <p className="text-xs md:text-sm text-[var(--muted)]">
-                    A unified patient experience built on top of the systems that already exist, not a replacement.
-                  </p>
-                </div>
+    <div className="w-full mb-12">
+      {/* Layered Architectural Container */}
+      <motion.div
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative"
+      >
+        {/* Top Floating Continuity Layer */}
+        <div className="p-6 sm:p-10 mb-6 rounded-[var(--radius-card)] bg-white border border-[var(--line)] shadow-[0_0.75rem_2.5rem_rgba(31,41,42,0.06)] relative z-20">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[var(--line)]">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[var(--accent-from)] to-[var(--accent-to)] text-white flex items-center justify-center shadow-sm">
+                <Layers className="w-5 h-5" />
               </div>
-              <span className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[var(--accent)]/12 text-[var(--accent-text)] border border-[var(--accent)]/35">
-                Active Orchestration
-              </span>
+              <div>
+                <h3 className="font-semibold text-lg sm:text-xl text-[var(--fg)]">
+                  AYUSHA — The Continuity Layer
+                </h3>
+                <p className="text-xs sm:text-sm text-[var(--muted)]">
+                  A unified patient experience built on top of the systems that already exist, not a replacement.
+                </p>
+              </div>
             </div>
+            <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[var(--surface)] text-[var(--accent)] border border-[var(--line)]">
+              Active Orchestration
+            </span>
+          </div>
 
-            {/* 3 Interactive Pillars Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
-              {CONTENT.solution.pillars.map((pillar) => {
-                const Icon = icons[pillar.id] || Layers;
-                const isSelected = selectedPillar === pillar.id;
+          {/* 3 Solution Pillars: Numbered Hover-Fill Rows */}
+          <div className="mt-6 divide-y divide-[var(--line)]">
+            {CONTENT.solution.pillars.map((pillar) => {
+              const Icon = icons[pillar.id] || Layers;
+              const isSelected = selectedPillar === pillar.id;
 
-                return (
-                  <div
-                    key={pillar.id}
-                    onClick={() => setSelectedPillar(pillar.id)}
-                    className={`cursor-pointer p-5 md:p-6 rounded-2xl transition-all duration-300 border ${
-                      isSelected
-                        ? 'bg-white/90 border-[var(--accent)] shadow-md ring-2 ring-[var(--accent)]/20'
-                        : 'bg-white/40 border-white/60 hover:bg-white/60 hover:border-[var(--accent)]/30 shadow-xs'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-4">
+              return (
+                <div
+                  key={pillar.id}
+                  onClick={() => setSelectedPillar(pillar.id)}
+                  className={`cursor-pointer transition-all duration-300 rounded-[var(--radius-card-sm)] my-1.5 p-4 sm:p-6 ${
+                    isSelected
+                      ? 'bg-[var(--surface)] border border-[var(--line)] shadow-xs'
+                      : 'hover:bg-[var(--surface)]/60'
+                  }`}
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="flex items-start sm:items-center gap-4">
+                      <span className="font-mono text-xs sm:text-sm font-bold text-[var(--muted)] shrink-0">
+                        {pillar.number}
+                      </span>
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                           isSelected
                             ? 'bg-[var(--accent)] text-white'
-                            : 'bg-[var(--accent)]/12 text-[var(--accent-text)]'
+                            : 'bg-[var(--surface-2)] text-[var(--accent)]'
                         }`}
                       >
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="font-mono text-xs font-bold text-[var(--muted)]/60">
-                        Pillar {pillar.number}
-                      </span>
+                      <div>
+                        <h4 className="font-semibold text-base sm:text-lg text-[var(--fg)]">
+                          {pillar.title}
+                        </h4>
+                        <span className="text-xs font-medium text-[var(--accent)]">
+                          {pillar.subtitle}
+                        </span>
+                      </div>
                     </div>
 
-                    <h4 className="font-semibold text-lg text-[var(--ink)] mb-1">
-                      {pillar.title}
-                    </h4>
-                    <p className="text-xs font-medium text-[var(--accent-text)] mb-3">
-                      {pillar.subtitle}
-                    </p>
-                    <p className="text-xs md:text-sm text-[var(--muted)] leading-relaxed mb-4">
+                    <p className="text-xs sm:text-sm text-[var(--muted)] max-w-xl leading-relaxed lg:text-right">
                       {pillar.description}
                     </p>
-
-                    <div className="space-y-1.5 pt-3 border-t border-black/5">
-                      {pillar.details.map((detail, dIdx) => (
-                        <div key={dIdx} className="flex items-start gap-1.5 text-xs text-[var(--ink)]/85">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent)] shrink-0 mt-0.5" />
-                          <span>{detail}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-                );
-              })}
-            </div>
-          </GlassPanel>
 
-          {/* Connector pulses */}
-          <div className="flex justify-center my-1">
-            <div className="flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/70 border border-white/80 text-[11px] font-medium text-[var(--muted)] shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
-              <span>Bi-directional interoperability bridges</span>
+                  {/* Bullet details */}
+                  <div className="mt-4 pt-3 border-t border-[var(--line)]/60 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {pillar.details.map((detail, dIdx) => (
+                      <div key={dIdx} className="flex items-start gap-2 text-xs text-[var(--fg)]">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent)] shrink-0 mt-0.5" />
+                        <span>{detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bi-directional interoperability pulse indicator */}
+        <div className="flex justify-center my-1.5">
+          <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[var(--line)] text-xs font-medium text-[var(--muted)] shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
+            <span>Bi-directional interoperability bridges</span>
+          </div>
+        </div>
+
+        {/* Base Layer: Disparate Global Health Systems & Hospitals */}
+        <div className="p-6 sm:p-7 rounded-[var(--radius-card-sm)] bg-[var(--ink)] text-[var(--on-dark)] shadow-xl relative z-10 border border-white/10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-[var(--accent-soft)] shrink-0" />
+              <span className="text-xs sm:text-sm font-semibold tracking-wide text-[var(--on-dark)]">
+                {CONTENT.solution.baseLayerText}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2 text-[0.6875rem] text-[var(--on-dark-muted)]">
+              <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">Epic / Cerner EHR</span>
+              <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">India ABDM (ABHA)</span>
+              <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">NHS Spine / EU HIE</span>
+              <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">Local Clinic Silos</span>
             </div>
           </div>
-
-          {/* Base Layer: Disparate Global Health Systems & Hospitals */}
-          <div className="p-6 md:p-7 rounded-[24px] bg-[var(--ink)]/90 text-[var(--on-dark)] shadow-xl relative z-10 border border-white/10">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full bg-[var(--status-risk)]" />
-                <span className="text-xs md:text-sm font-semibold tracking-wide text-[var(--on-dark)]">
-                  {CONTENT.solution.baseLayerText}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2 text-[11px] text-[var(--on-dark-muted)]">
-                <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">Epic / Cerner EHR</span>
-                <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">India ABDM (ABHA)</span>
-                <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">NHS Spine / EU HIE</span>
-                <span className="px-2.5 py-1 rounded-md bg-white/10 font-mono">Local Clinic Silos</span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
