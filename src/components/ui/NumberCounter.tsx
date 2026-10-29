@@ -15,15 +15,21 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
   prefix = '',
   suffix = '',
   decimals = 0,
-  duration = 2000,
+  duration = 1800,
   className = '',
 }) => {
   const [current, setCurrent] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
   const hasAnimated = useRef(false);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setCurrent(target);
+      return;
+    }
+
     if (isInView && !hasAnimated.current) {
       hasAnimated.current = true;
       const startTime = performance.now();
@@ -31,7 +37,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Easing: easeOutExpo (1 - Math.pow(2, -10 * progress))
+        // easeOutExpo
         const easeVal = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         const nextVal = target * easeVal;
 

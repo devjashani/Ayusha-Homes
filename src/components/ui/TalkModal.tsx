@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GlassPanel } from '@/components/glass/GlassPanel';
 import { CONTENT } from '@/data/content';
+import { stopScroll, startScroll } from '@/hooks/useLenis';
 import { X, ArrowUpRight, ShieldCheck, Building2 } from 'lucide-react';
 
 interface TalkModalProps {
@@ -14,17 +14,27 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+      }
     };
+
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      stopScroll();
       window.addEventListener('keydown', handleKeyDown);
+      // Focus modal container
+      setTimeout(() => {
+        modalRef.current?.focus();
+      }, 50);
     } else {
-      document.body.style.overflow = '';
+      startScroll();
     }
+
     return () => {
+      if (isOpen) {
+        startScroll();
+      }
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
     };
   }, [isOpen, onClose]);
 
@@ -35,87 +45,83 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--ink)]/50 backdrop-blur-md"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(17,17,17,0.3)] backdrop-blur-[16px]"
           onClick={onClose}
         >
           <motion.div
             ref={modalRef}
-            initial={{ scale: 0.94, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.94, opacity: 0, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-            className="w-full max-w-lg"
+            tabIndex={-1}
+            initial={{ y: 28, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 28, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 260 }}
+            className="w-full max-w-[32rem] rounded-[var(--radius-card)] bg-white p-6 md:p-8 shadow-2xl relative outline-none border border-[var(--line)]"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="talk-modal-title"
           >
-            <GlassPanel
-              variant="modal"
-              className="p-6 md:p-8 border-white/90 bg-white/95 shadow-2xl relative"
+            {/* Close Button top-right as a 2.25rem circle */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-[var(--surface)] hover:bg-[var(--surface-2)] text-[var(--fg)] flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close Dialog"
             >
-              <div className="flex items-center justify-between pb-4 border-b border-[var(--line)]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-[var(--accent)]/10 text-[var(--accent-text)] flex items-center justify-center">
-                    <Building2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 id="talk-modal-title" className="font-bold text-lg text-[var(--ink)]">
-                      {CONTENT.waitlist.modalContactTitle}
-                    </h3>
-                    <span className="text-xs text-[var(--muted)]">Confidential Corridor Discussion</span>
-                  </div>
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3 pb-4 border-b border-[var(--line)] pr-10">
+              <div className="w-10 h-10 rounded-xl bg-[var(--surface)] text-[var(--accent)] flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 id="talk-modal-title" className="font-semibold text-lg text-[var(--ink)]">
+                  {CONTENT.waitlist.modalContactTitle}
+                </h3>
+                <span className="text-xs text-[var(--muted)] font-mono">Confidential Corridor Discussion</span>
+              </div>
+            </div>
+
+            <div className="py-6 space-y-4">
+              <p className="text-sm text-[var(--muted)] leading-relaxed">
+                {CONTENT.waitlist.modalContactDescription}
+              </p>
+
+              <div className="p-4 rounded-[var(--radius-card-sm)] bg-[var(--surface)] border border-[var(--line)] flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[var(--accent)] block font-mono">
+                    Direct Founder Contact
+                  </span>
+                  <span className="text-sm font-semibold text-[var(--ink)]">
+                    {CONTENT.waitlist.modalContactEmail}
+                  </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="p-1.5 rounded-full text-[var(--muted)] hover:bg-black/5 hover:text-[var(--ink)] transition-colors cursor-pointer"
-                  aria-label="Close Dialog"
+                <a
+                  href={`mailto:${CONTENT.waitlist.modalContactEmail}?subject=AYUSHA%20Investor%20%2F%20Partner%20Inquiry`}
+                  className="px-4 py-2 rounded-full font-semibold text-xs bg-[var(--ink)] text-white hover:bg-[var(--ink-2)] shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
                 >
-                  <X className="w-5 h-5" />
-                </button>
+                  <span>Launch Mail</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
               </div>
 
-              <div className="py-6 space-y-4">
-                <p className="text-sm text-[var(--muted)] leading-relaxed">
-                  {CONTENT.waitlist.modalContactDescription}
-                </p>
-
-                <div className="p-4 rounded-2xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--accent-text)] block">
-                      Direct Founder Contact
-                    </span>
-                    <span className="text-sm font-semibold text-[var(--ink)]">
-                      {CONTENT.waitlist.modalContactEmail}
-                    </span>
-                  </div>
-                  <a
-                    href={`mailto:${CONTENT.waitlist.modalContactEmail}?subject=AYUSHA%20Investor%20%2F%20Partner%20Inquiry`}
-                    className="px-4 py-2 rounded-full font-semibold text-xs bg-[var(--brand)] text-white hover:bg-[var(--brand-hover)] shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <span>Launch Mail</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-
-                <div className="text-xs text-[var(--muted)] flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[var(--status-success)] shrink-0" />
-                  <span>NDAs and institutional deployment whitepapers available upon accredited request.</span>
-                </div>
+              <div className="text-xs text-[var(--muted)] flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[var(--good)] shrink-0" />
+                <span>NDAs and institutional deployment whitepapers available upon accredited request.</span>
               </div>
+            </div>
 
-              <div className="pt-4 border-t border-[var(--line)] flex justify-end">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-5 py-2 rounded-full text-xs font-semibold text-[var(--muted)] hover:bg-black/5 transition-colors cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-            </GlassPanel>
+            <div className="pt-4 border-t border-[var(--line)] flex justify-end">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-5 py-2 rounded-full text-xs font-semibold text-[var(--muted)] hover:bg-[var(--surface)] transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
