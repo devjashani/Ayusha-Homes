@@ -3,7 +3,11 @@ import { motion } from 'motion/react';
 import { CONTENT } from '@/data/content';
 import { Target } from 'lucide-react';
 
-export const Team: React.FC = () => {
+interface TeamProps {
+  onOpenTalkModal?: () => void;
+}
+
+export const Team: React.FC<TeamProps> = ({ onOpenTalkModal }) => {
   const founder = CONTENT.team.founder;
 
   return (
@@ -135,9 +139,20 @@ export const Team: React.FC = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="rounded-[var(--radius-card-sm)] p-5 md:p-6 bg-white border border-[var(--line)] text-center shadow-xs">
-            <div className="flex items-center justify-center gap-2.5 text-xs md:text-sm text-[var(--ink)] font-semibold">
-              <Target className="w-4 h-4 text-[var(--accent)] shrink-0" />
-              <span>{CONTENT.brand.milestoneNotice}</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-xs md:text-sm text-[var(--ink)] font-semibold">
+              <div className="flex items-center gap-2.5">
+                <Target className="w-4 h-4 text-[var(--accent)] shrink-0" />
+                <span>{CONTENT.brand.milestoneNotice}</span>
+              </div>
+              {onOpenTalkModal && (
+                <button
+                  type="button"
+                  onClick={onOpenTalkModal}
+                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[var(--surface)] hover:bg-[var(--accent)] hover:text-white border border-[var(--line)] text-[var(--accent)] transition-all cursor-pointer"
+                >
+                  Talk to us
+                </button>
+              )}
             </div>
           </div>
         </motion.div>

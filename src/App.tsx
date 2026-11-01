@@ -43,6 +43,24 @@ export const App: React.FC = () => {
 
   // Investor / Partner dialog state
   const [isTalkModalOpen, setIsTalkModalOpen] = useState(false);
+  const [talkModalPrefill, setTalkModalPrefill] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
+
+  const handleOpenTalkModal = (prefill?: {
+    name?: string;
+    email?: string;
+    message?: string;
+  }) => {
+    if (prefill) {
+      setTalkModalPrefill(prefill);
+    } else {
+      setTalkModalPrefill({});
+    }
+    setIsTalkModalOpen(true);
+  };
 
   const handleCheckReadiness = (from: string, to: string, persona: string) => {
     setReadinessPrefill({ from, to, persona });
@@ -62,7 +80,7 @@ export const App: React.FC = () => {
       <PageLoader onIntroReady={() => setIntroReady(true)} />
 
       {/* Header & Glass Navigation Bar */}
-      <Navbar onOpenTalkModal={() => setIsTalkModalOpen(true)} />
+      <Navbar onOpenTalkModal={() => handleOpenTalkModal()} />
 
       {/* Main Content Landmark */}
       <main id="main-content" className="w-full">
@@ -280,7 +298,7 @@ export const App: React.FC = () => {
             <Roadmap />
             <Moat />
             <RisksAndMitigants />
-            <Team />
+            <Team onOpenTalkModal={() => handleOpenTalkModal()} />
           </div>
         </section>
 
@@ -292,9 +310,9 @@ export const App: React.FC = () => {
             initialFromCountry={readinessPrefill.from}
             initialToCountry={readinessPrefill.to}
             initialPersona={readinessPrefill.persona}
-            onOpenTalkModal={() => setIsTalkModalOpen(true)}
+            onOpenTalkModal={handleOpenTalkModal}
           />
-          <Footer />
+          <Footer onOpenTalkModal={() => handleOpenTalkModal()} />
         </div>
       </main>
 
@@ -302,6 +320,7 @@ export const App: React.FC = () => {
       <TalkModal
         isOpen={isTalkModalOpen}
         onClose={() => setIsTalkModalOpen(false)}
+        initialData={talkModalPrefill}
       />
     </div>
   );

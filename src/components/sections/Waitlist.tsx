@@ -34,7 +34,7 @@ interface WaitlistProps {
   initialFromCountry?: string;
   initialToCountry?: string;
   initialPersona?: string;
-  onOpenTalkModal: () => void;
+  onOpenTalkModal: (prefill?: { name?: string; email?: string; message?: string }) => void;
 }
 
 export const Waitlist: React.FC<WaitlistProps> = ({
@@ -54,6 +54,7 @@ export const Waitlist: React.FC<WaitlistProps> = ({
     handleSubmit,
     setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
@@ -427,7 +428,14 @@ export const Waitlist: React.FC<WaitlistProps> = ({
 
                     <button
                       type="button"
-                      onClick={onOpenTalkModal}
+                      onClick={() => {
+                        const vals = getValues();
+                        onOpenTalkModal({
+                          name: vals.name || '',
+                          email: vals.email || '',
+                          message: vals.note || '',
+                        });
+                      }}
                       className="w-full sm:w-auto px-6 py-3.5 rounded-full font-medium text-sm text-white bg-white/10 hover:bg-white/20 border border-white/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Mail className="w-4 h-4 text-white" />

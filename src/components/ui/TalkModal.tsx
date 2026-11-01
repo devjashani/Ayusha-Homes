@@ -28,9 +28,14 @@ type TalkFormData = z.infer<typeof talkSchema>;
 interface TalkModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialData?: {
+    name?: string;
+    email?: string;
+    message?: string;
+  };
 }
 
-export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
+export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose, initialData }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const mountedAtRef = useRef<number>(Date.now());
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -64,7 +69,13 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
       mountedAtRef.current = Date.now();
       setIsSubmitted(false);
       setSubmitError(null);
-      reset();
+      reset({
+        name: initialData?.name || '',
+        email: initialData?.email || '',
+        message: initialData?.message || '',
+        consent: true,
+        botField: '',
+      });
       stopScroll();
       window.addEventListener('keydown', handleKeyDown);
       setTimeout(() => {
@@ -120,7 +131,7 @@ export const TalkModal: React.FC<TalkModalProps> = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(17,17,17,0.3)] backdrop-blur-[16px]"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-[rgba(17,17,17,0.4)] backdrop-blur-[16px]"
           onClick={onClose}
         >
           <motion.div

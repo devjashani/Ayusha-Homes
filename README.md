@@ -115,5 +115,18 @@ Submissions are inserted directly into the `public.submissions` table with clien
 
 ---
 
+## 🎛️ Admin Dashboard
+
+A secure, unlinked management dashboard is available at `/admin` for viewing, searching, filtering, annotating, and exporting pilot & investor submissions.
+
+Follow these 5 steps to configure and access the dashboard:
+1. **Create the owner user in Supabase Auth**: In the Supabase dashboard, go to **Authentication** > **Users** > click **Add user** (enter your email and a strong password, and check "Auto Confirm User").
+2. **Disable sign-ups**: Go to **Authentication** > **Providers** > **Email**, and turn **"Allow new users to sign up" = OFF** to prevent public registrations.
+3. **Put the owner email into `/supabase/admin.sql`**: Open [`supabase/admin.sql`](supabase/admin.sql) and replace `'OWNER_EMAIL_HERE'` with your exact Supabase Auth email.
+4. **Run `/supabase/admin.sql` in the Supabase SQL Editor**: Execute the script to create the `admin_users` table, install the `is_admin()` security definer function, configure row-level security policies (SELECT, UPDATE, DELETE for admins only), and enable realtime replication.
+5. **Navigate to `/admin` in the browser and sign in**: Go to `http://localhost:5173/admin` (or `https://your-domain.com/admin`) and sign in with your credentials.
+
+---
+
 ## 🛡️ Clinical & Legal Safety Boundary
 AYUSHA supports identification, information, routing, and notification. Qualified clinicians and local emergency services make all medical decisions. Steps 1–5 are AYUSHA's domain; step 6 sits outside our system by design.

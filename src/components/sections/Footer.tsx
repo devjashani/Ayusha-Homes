@@ -2,7 +2,11 @@ import React from 'react';
 import { CONTENT } from '@/data/content';
 import { ArrowUp, ShieldAlert } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenTalkModal?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenTalkModal }) => {
   const scrollToTop = () => {
     if ((window as unknown as { lenis?: { scrollTo: (target: number) => void } }).lenis) {
       (window as unknown as { lenis: { scrollTo: (target: number) => void } }).lenis.scrollTo(0);
@@ -32,9 +36,20 @@ export const Footer: React.FC = () => {
               {CONTENT.brand.pillarsMotto}
             </p>
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-[var(--on-dark)] border border-white/15">
-                {CONTENT.footer.confidentiality}
-              </span>
+              {onOpenTalkModal ? (
+                <button
+                  type="button"
+                  onClick={onOpenTalkModal}
+                  className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 hover:bg-white/20 text-[var(--on-dark)] border border-white/15 transition-colors cursor-pointer"
+                  title="Open Investor & Partner Discussion"
+                >
+                  {CONTENT.footer.confidentiality} • Talk to us
+                </button>
+              ) : (
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-[var(--on-dark)] border border-white/15">
+                  {CONTENT.footer.confidentiality}
+                </span>
+              )}
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-[var(--accent-soft)] border border-white/15">
                 Founder: {CONTENT.team.founder.name}
               </span>
@@ -62,6 +77,17 @@ export const Footer: React.FC = () => {
                   Pilot Waitlist
                 </a>
               </li>
+              {onOpenTalkModal && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={onOpenTalkModal}
+                    className="text-[var(--on-dark-muted)] hover:text-[var(--accent-soft)] transition-colors cursor-pointer text-left"
+                  >
+                    Investor & Partner Inquiries
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
