@@ -92,10 +92,26 @@ Color tokens and typography rules are defined in:
 - Source Palette: Sky Blue `#4391C6`, Soft Azure `#63A4CE`, Deep Lake Blue `#336E87`, Turquoise Teal `#549A98`, Sage Green `#7EA294`, Granite Grey `#B5BEBA`, Charcoal Slate `#344546`
 - Global Tokens: `--ink: #1B2829`, `--muted: #4F6264`, `--on-dark: #EEF3F2`, `--on-dark-muted: #B5BEBA`, `--brand: #336E87`, `--brand-hover: #2D6177`, `--brand-soft: #4391C6`
 
-### 3. Production Waitlist API
-The waitlist submission stub lives in:
-👉 [`src/lib/submitWaitlist.ts`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/lib/submitWaitlist.ts)
-Currently logs submissions to `console` and saves them to `localStorage`. Replace the stub with your backend REST endpoint or serverless function (`fetch('/api/waitlist', ...)`).
+### 3. Supabase Integration
+Form submissions (both the "Join the pilot" registration and "Talk to us" inquiry) are handled in:
+👉 [`src/lib/submitWaitlist.ts`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/lib/submitWaitlist.ts) & [`src/lib/supabase.ts`](file:///Users/devjashani/Hollow%20Energy/src/lib/auth/Ayusha-Home/src/lib/supabase.ts)
+Submissions are inserted directly into the `public.submissions` table with client-side validation, anti-spam safeguards (honeypot, mount-timing checks), and deduplication handling.
+
+---
+
+## 🔐 Supabase setup
+
+1. **Database Schema**: Run `supabase/schema.sql` in the Supabase SQL Editor to create the `public.submissions` table, index, and row-level security policy.
+2. **Local Environment**: Copy `.env.example` to `.env.local` and fill in both values:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Add your credentials:
+   ```env
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+3. **Vercel Deployment**: In Vercel, go to **Settings** > **Environment Variables**, add the same two variables (`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`) for **Production**, **Preview**, and **Development**, then redeploy.
 
 ---
 

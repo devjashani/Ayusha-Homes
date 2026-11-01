@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -9,15 +9,23 @@ import { submitWaitlist } from '@/lib/submitWaitlist';
 import { Send, Mail, AlertCircle, Loader2 } from 'lucide-react';
 
 const waitlistSchema = z.object({
-  name: z.string().min(2, { message: 'Please enter your full name (at least 2 characters)' }),
-  email: z.string().email({ message: 'Please provide a valid email address' }),
+  name: z
+    .string()
+    .min(2, { message: 'Please enter your full name (at least 2 characters)' })
+    .max(100, { message: 'Full name must be 100 characters or less' }),
+  email: z
+    .string()
+    .trim()
+    .email({ message: 'Please provide a valid email address' })
+    .max(254, { message: 'Email must be 254 characters or less' }),
   persona: z.string().min(1, { message: 'Please select your role category' }),
   fromCountry: z.string().min(1, { message: 'Please select departure location' }),
   toCountry: z.string().min(1, { message: 'Please select destination location' }),
-  note: z.string().optional(),
+  note: z.string().max(1000, { message: 'Message must be 1000 characters or less' }).optional(),
   consent: z.literal(true, {
     errorMap: () => ({ message: 'You must agree to the pilot communication & liability terms' }),
   }),
+  botField: z.string().optional(),
 });
 
 type WaitlistFormData = z.infer<typeof waitlistSchema>;
@@ -39,11 +47,13 @@ export const Waitlist: React.FC<WaitlistProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const mountedAtRef = useRef<number>(Date.now());
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
@@ -55,6 +65,7 @@ export const Waitlist: React.FC<WaitlistProps> = ({
       toCountry: initialToCountry,
       note: '',
       consent: true,
+      botField: '',
     },
   });
 
@@ -65,13 +76,25 @@ export const Waitlist: React.FC<WaitlistProps> = ({
   }, [initialFromCountry, initialToCountry, initialPersona, setValue]);
 
   const onSubmit = async (data: WaitlistFormData) => {
+    // Spam protection: silently show success if honeypot is filled
+    if (data.botField) {
+      setIsSubmitted(true);
+      return;
+    }
+
+    // Spam protection: ignore submissions made less than 2 seconds after mount
+    if (Date.now() - mountedAtRef.current < 2000) {
+      setIsSubmitted(true);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
     try {
       await submitWaitlist(data);
       setIsSubmitted(true);
     } catch {
-      setSubmitError('Failed to record submission. Please retry.');
+      setSubmitError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -202,7 +225,11 @@ export const Waitlist: React.FC<WaitlistProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      mountedAtRef.current = Date.now();
+                      reset();
+                    }}
                     className="px-6 py-2.5 rounded-full text-xs font-semibold bg-white/15 hover:bg-white/25 text-white border border-white/30 transition-colors cursor-pointer"
                   >
                     Submit another registration
@@ -216,6 +243,31 @@ export const Waitlist: React.FC<WaitlistProps> = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
+                  {/* Invisible honeypot field for spam protection */}
+                  <div
+                    aria-hidden="true"
+                    tabIndex={-1}
+                    style={{
+                      position: 'absolute',
+                      left: '-9999px',
+                      top: '-9999px',
+                      opacity: 0,
+                      pointerEvents: 'none',
+                      width: 0,
+                      height: 0,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <label htmlFor="waitlist-bot-field">Do not fill this field</label>
+                    <input
+                      id="waitlist-bot-field"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      {...register('botField')}
+                    />
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {/* Full Name */}
                     <div>
